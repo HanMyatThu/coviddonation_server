@@ -1,0 +1,42 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Covid Rice Donation | Login
+
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+    link(rel='stylesheet', href='/css/admin.css')
+
+    script(src="/plugins/js/jquery.min.js")
+    script(src="/plugins/js/popper.min.js")
+    script(src="/plugins/js/bootstrap.min.js")
+  body#LoginPage
+    section
+        .container.loginsection
+            .row
+                .col-md-6.offset-md-3
+                    .card
+                        .text-center.mt-5.mb-3
+                            h5 Login To DashBoard
+                        .card-body.mr-5.ml-5
+                            form#LoginForm(action="")
+                                .inputWithIcon.mb-4
+                                    input#phone.form-control(type='number', name='phone',placeholder='Enter Your phone',required='')
+                                    i.fas.fa-phone.fa-lg.fa-fw(aria-hidden='true')
+                                .inputWithIcon.mb-4
+                                    input#password.form-control(type='password',name='password', placeholder='Enter Password',required='')
+                                    i.fas.fa-key.fa-lg.fa-fw(aria-hidden='true')
+                                .form-group.mt-2#loginFormGroup.text-right
+                                    button.btn.btn-success.mr-2(type='submit') LOGIN
+                                    a.btn.btn-primary(href="/admin/register") Register
+                                .text-center.mt-4
+                                    small If you can't login, please contact support@pleodata.com
+                                
+  script(src="/plugins/js/axios.min.js")  
+  script(src="/plugins/js/cookie.js")    
+  script(src='/js/admins/login.js')
+   

@@ -1,0 +1,53 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Page Title
+    title PleoPay | Register
+    // Favicon
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    link(rel='stylesheet', href='/css/theme.css')
+  body
+    // regester start
+    section.p-lg-0.login-sec
+      .container-fluid
+        .row.align-items-center
+          .col-lg-6
+            .login-content
+              .title.d-inline-block.mb-4
+                h3.mb-3
+                  | Get more things, register with 
+                  span.gradient-text1 PleoData 
+                  | .
+                p Please register the form.
+              // form
+              form#registerForm
+                input#username.form-control(type='text', name='username', placeholder='Full Name', required='required')
+                input#email.form-control(type='email', name='email', placeholder='E-mail Address', required='required')
+                input#phone.form-control(type='text', name='phone', placeholder='Phone', required='required')
+                input#address.form-control(type='text', name='address', placeholder='Address', required='required')
+                input#password.form-control(type='password', name='password', placeholder='Password', required='required')
+                input#cpassword.form-control(type='password', name='confirmed_password', placeholder='Confirmed Password', required='required')
+                input#storename.form-control(type='text', name='storename', placeholder='Store Name', required='required')
+                input#companyname.form-control(type='text', name='companyname', placeholder='Company Name', required='required')
+                .form-button
+                  button#submit.btn.btn-large.btn-rounded.btn-gradient(type='submit') Register
+                br  
+                a(href='/login') Go to Login
+          .col-lg-6.d-none.d-lg-block.p-0
+            // Feature Image Half
+            img.feature-half(src='images/half-bg1.jpg', alt='image')
+    // regester end
+    // Optional JavaScript
+    include ./modal/error
+    include ./modal/success
+    script(src='/plugins/js/jquery.min.js')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    script(src='/plugins/js/gradient.js')
+    script(src='/plugins/js/axios.min.js')
+    script(src='/plugins/js/cookie.js')
+    script(src='/js/register.js')
+

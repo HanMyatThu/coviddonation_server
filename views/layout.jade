@@ -1,0 +1,66 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Covid Rice Donation | Admin
+
+    //google fonts
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap', rel='stylesheet')
+
+    //css imports
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+    link(rel='stylesheet', href='/css/admin.css')
+
+
+    script(src="/plugins/js/jquery.min.js")
+    script(src="/plugins/js/popper.min.js")
+    script(src="/plugins/js/bootstrap.min.js")
+  body
+    // Loader
+    #preloader
+      #status
+        .spinner Loading...
+    .header
+        a#menu-action(href='#')
+            i.fa.fa-bars
+            span Close
+        .logo
+            | Admin DashBoard 
+            i.fas.fa-home
+        
+    .sidebar
+        ul
+            li
+                a(href='/admin/dashboard')
+                    i.fas.fa-home
+                    span DashBoard
+            li
+                a(href='/admin/process')
+                    i.fas.fa-server
+                    span Processes
+            li
+                a(href='/admin/machines')
+                    i.fas.fa-truck
+                    span Machine
+            li
+                a(href='/admin/users')
+                    i.fas.fa-users
+                    span Merchants
+            li#LogoutRoute
+                a(href='')
+                    i.fas.fa-key
+                    span Logout
+    .main
+        block content
+
+  include ./utils/error
+  include ./utils/success
+  
+  script(src="/plugins/js/axios.min.js")
+  script(src="/plugins/js/cookie.js")    
+  script(src='/js/admins/main.js')
+   

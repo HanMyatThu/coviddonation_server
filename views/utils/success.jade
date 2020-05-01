@@ -1,0 +1,20 @@
+// Modal
+link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+
+
+#successModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='successModalTitle', aria-hidden='true')
+    .modal-dialog.modal-dialog-centered(role='document')
+        .modal-content
+            .modal-header.alert.alert-success
+                h5#successModalTitle.modal-title.Baskervville Success
+                    i.ml-2.mt-1.far.fa-check-circle
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+            .modal-body.text-center
+                h6#successModalContent.Baskervville You have done this successfully.
+                .text-right.mt-5
+                    button.btn.btn-secondary.btn-small(type='button', data-dismiss='modal')     Close
+
+script(src="/plugins/js/bootstrap.min.js")
+script(src="/plugins/js/popper.min.js")
