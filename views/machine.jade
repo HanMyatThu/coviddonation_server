@@ -17,12 +17,73 @@ block content
                     table#machineTable.table.table-striped.table-bordered.table-hovered(style='width:100%; font-size: 14px;')
                         thead
                             th
+                            th ID
                             th Machine ID
-                            th Name
+                            th Machine Code
+                            th Status
                             th Location
                             th IotStream  
                         tbody 
     
+             //New Machine Modal
+            #machineModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='machineModalTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header.bg-info.text-center
+                            h5#machineModalTitle.modal-title(style="color:white") Create Machine
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            form#machineForm
+                                .form-group.row.mt-3
+                                    label.col-sm-4.col-form-label(for='machineName') Enter Machine ID
+                                    .col-sm-8
+                                        input#machineName.form-control(type="text",name="machineName",required='',placeholder='BTH_12')
+                                
+                                .form-group.row.mt-3.mb-3
+                                    label.col-sm-4.col-form-label(for='location') Enter Location
+                                    .col-sm-8
+                                        select#location.form-control(name="location",required='')
+                                            option(value="0") <--- Choose a location --->
+                                            option(value="ahlon") Alon Township
+                                            option(value="Bahan") Bahan Township
+                                            option(value="Botahtaung") Botahtaung Township
+                                            option(value="Dagon") Dagon Township
+                                            option(value="Dala") Dala Township
+                                            option(value="Hlaing") Hlaing Township
+                                            option(value="Hlaingtharya") Hlaingtharya Township
+                                            option(value="Insein") Insein Township
+                                            option(value="Kamaryut") Kamaryut Township
+                                            option(value="Tamwe") Tamwe Township
+                                            option(value="Thaketa") Thaketa Township
+                                            option(value="Thanlyin") Thanlyin Township
+                                            option(value="Thingangkuun") Thingangkuun Township
+                                        span#errorTmsg.text-red.nodisplay Please choose a township
+                                .form-group.row.mt-3.mb-3
+                                    label.col-sm-4.col-form-label(for='iotString') Enter IotString
+                                    .col-sm-8
+                                        input#iotString.form-control(type='text' ,name="iotString",required='')
+                                .form-group.text-right
+                                    button.btn.btn-primary(type='submit') Save
+            
+
+
+              //IotString Modal
+            #iotStringModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='iotStringModalTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header.bg-info.text-center
+                            h5#iotStringModalTitle.modal-title(style="color:white") Enter IotString to your machine
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            form#iotForm
+                                .form-group.row.mt-3.mb-3
+                                    label.col-sm-4.col-form-label(for='iotNewStirng') Enter itoString
+                                    .col-sm-8
+                                        input#iotNewStirng.form-control(type='text' ,name="iotNewStirng",required='')
+                                .form-group.text-right
+                                    button.btn.btn-primary(type='submit') Save
     script(src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" type='text/javascript')
     script(src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" type="text/javascript")
     script(src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js" type="text/javascript") 

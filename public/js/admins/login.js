@@ -22,7 +22,7 @@ $(document).ready(() => {
                 Cookies.set('admintoken',response.data.token , {expires:1} );
                 Cookies.set('admin',JSON.stringify(response.data.admin) , {expires:1} );
                 alert("success");
-                window.location.replace('/admin/dashboard');
+                window.location.replace('/admin/users');
             }).catch(e => {
                 alert(e);
             })

@@ -107,7 +107,6 @@ exports.ApprovedUser = async (req,res) => {
 exports.deletUser = async (req,res) => {
     try {
         const user = await User.findById(req.params.id);
-        console.log(user);
         if(!user) {
             return res.status(404).send({ error : "User not found"});
         }

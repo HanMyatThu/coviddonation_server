@@ -38,13 +38,13 @@ const userRoutes = require('./src/routes/users');
 const AdminRoute = require('./src/routes/admin');
 const FrontRoute = require('./src/routes/frontend');
 const MachineRoute = require('./src/routes/machines');
-const codeRoute = require('./src/routes/codes');
+const ProcessRoute = require('./src/routes/process');
 
 app.use(userRoutes);
 app.use(AdminRoute);
 app.use(FrontRoute);
 app.use(MachineRoute);
-app.use(codeRoute);
+app.use(ProcessRoute);
 
 server.listen(port , () => {
     console.log('server running on the port', port);

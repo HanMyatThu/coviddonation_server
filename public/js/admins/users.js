@@ -20,24 +20,8 @@ $(document).ready(() => {
             },
         
         },
-        "columns": [{
-            "className":      'details-control',
-            "orderable":      false,
-            "data":           null,
-            "defaultContent": ''
-        },
+        "columns": [
             { "data": "_id"},
-            { "data": "name" },
-            { "data": "age" },
-            { "data": "nationalID" },
-            { "data": null,
-              "render": function(data,type,row) {
-                return `${data.street},${data.township},${data.city},${data.country}`
-              }
-            },
-            { "data": "email"},
-            { "data": "phone" },           
-            { "data": "familyNo" },
             { "data": null,
               "render": function(data,type,row) {
                 let part = '';
@@ -55,8 +39,20 @@ $(document).ready(() => {
                 }
                 return part;
               }
-            },           
-
+            },    
+            { "data": "name" },
+            { "data": "age" },
+            { "data": "nationalID" },
+            { "data": 'street',
+            },
+            { "data": null,
+              "render": function(data,type,row) {
+                return `${data.township},${data.city}`
+              }
+            },
+            { "data": "email"},
+            { "data": "phone" },           
+            { "data": "familyNo" },
         ],
         select: true,
     } );
@@ -76,21 +72,13 @@ $(document).ready(() => {
         }
         axios.put(`/api/admin/users/${data._id}/approved`,dumpData,{ headers})
             .then(response => {
+                
+                $('#successModal').modal('show');
+                $('#successModalTitle').html('User approval succeeded');
+                $('#successModalContent').html('Your approval of user is success with a request code for machine');
 
-                const code = {
-                    owner: data._id,
-                }
-
-                axios.post('/api/admin/codes',code,{headers})
-                    .then(response => {
-                        $('#successModal').modal('show');
-                        $('#successModalTitle').html('User approval succeeded');
-                        $('#successModalContent').html('Your approval of user is success with a request code for machine');
-
-                        dataTable.ajax.reload();
-                    }).catch(e => {
-                       
-                    })
+                dataTable.ajax.reload();
+                
             }).catch(e => {
                 $('#errorModal').modal('show');
                 $('#errorModalTitle').html('User approval failed');

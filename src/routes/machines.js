@@ -12,6 +12,8 @@ router.post('/api/admin/machines',adminauth, MachineController.createMachine);
 
 router.get('/api/admin/machines/:id',adminauth, MachineController.getMachineByID);
 
+router.put('/api/admin/machines/:id',adminauth,MachineController.updateMachineById);
+
 router.delete('/api/admin/machines/:id',adminauth, MachineController.deleteMachineByID);
 
 module.exports = router;

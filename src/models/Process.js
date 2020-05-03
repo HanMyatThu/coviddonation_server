@@ -6,16 +6,15 @@ const processSchema = mongoose.Schema({
         required : true,
         ref : 'users'
     },
-    usedCode : {
-        type : mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref : 'codes'
-    },
     machine: {
         type : mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'machines'
     },
+    status: {
+        type: String,
+        default : 'processing'
+    }
 },{
     timestamps:true
 })

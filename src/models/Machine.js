@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
-const Code = require('./Code');
 
 const machineSchema = mongoose.Schema({
     name : {
-        type : String
+        type : String,
+        trim: true,
+    },
+    code : {
+        type: String,
+        trim: true,
+        required: true,
     },
     location : {
         type : String,
@@ -11,27 +16,32 @@ const machineSchema = mongoose.Schema({
         trim: true,
         lowercase: true,
     },
-    iotStream : {
+    iotString : {
         type : String,
+        default: null,
+    },
+    status: {
+        type : String,
+        default : 'Working'
     }
 })
 
 
-// relationship chate
-machineSchema.virtual('codes',{
-    ref: 'codes',
-    localField: '_id',
-    foreignField: 'machine'
-})
+// // relationship chate
+// machineSchema.virtual('codes',{
+//     ref: 'codes',
+//     localField: '_id',
+//     foreignField: 'machine'
+// })
 
 
-// Delete user tasks when user is removed
-machineSchema.pre('remove',async function(next){
-    const machine = this
-    await Code.deleteMany({ machine: machine._id});
+// // Delete user tasks when user is removed
+// machineSchema.pre('remove',async function(next){
+//     const machine = this
+//     await Code.deleteMany({ machine: machine._id});
 
-    next();
-})
+//     next();
+// })
 
 const Machine = mongoose.model('machines',machineSchema);
 

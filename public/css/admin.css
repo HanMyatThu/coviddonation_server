@@ -395,7 +395,7 @@ Spinner
 =============================*/
 #LoginPage {
   background: rgb(2,0,36);
-  background: linear-gradient(90deg, #349231 0%, rgb(92, 209, 150) 0%, rgb(56, 151, 107) 30%, rgb(72, 197, 120) 39%, rgb(41, 150, 59) 44%, rgb(71, 202, 141) 72%, rgb(70, 207, 100) 100%);
+  background: linear-gradient(90deg, #6faa6d 0%, #6faa6d 0%, rgb(56, 151, 107) 30%, rgb(56, 151, 107) 39%, rgb(56, 151, 107) 44%, rgb(56, 151, 107) 72%, rgb(56, 151, 107) 100%);
 }
 .loginsection {
   margin-top: 170px;
@@ -600,3 +600,42 @@ input[type=radio]:checked + label>img {
       transparent .1em
     );
 } */
+
+
+/**
+Machine**/
+.machineAddBtn {
+  background: green !important;
+  color: #ffffff !important;
+  border-radius: 5px !important;
+}
+.badge {
+  padding: 10px 10px !important;
+  margin-left: 3px;
+  border-radius: 10px;
+}
+
+/**
+Footer
+**/
+footer {
+  margin: 0;
+  padding: 0;
+}
+.mini-footer {
+  background:#5d965d;
+  text-align:center;
+  padding:18px 0;
+ }
+ .mini-footer p {
+  margin:0;
+  line-height:26px;
+  font-size:15px;
+  color:white;
+ }
+ .mini-footer p a {
+  color:#5867dd
+ }
+ .mini-footer p a:hover {
+  color:#34bfa3
+ }

@@ -1,30 +1,50 @@
 const Process = require('../models/Process');
 const User = require('../models/User');
 const Machine = require('../models/Machine');
-const Code = require('../models/Code');
+const IotController  = require('../controllers/iothubController');
 
 exports.createProcess = async (req,res) => {
     try {
-        const code = await Code.findOne({ owner : req.user._id });
-        if(code.used === true) {
-            return res.status(400).send({ error : "You already used that code"});
-        } 
-        const machine = await Machine.findById(req.body.machine);
+        const machine = await Machine.findOne({name : req.body.name, code: req.body.code});
         if(!machine) {
             return res.status(404).send({ error : "You code is not for that machine"});
         }
         const process = new Process({
             user: req.user._id,
-            usedCode : code._id,
-            machine: req.body.machine
+            machine: machine._id
         });
+        // const c2Dsg = {
+        //     tranID : process._id,
+        //     machineID: req.body.name,
+        //     userID: req.user._id,
+        //     status: process.status
+        // }
+        // await IotController.sendC2D(c2Dsg)
         await process.save();
-        // save code to used
-        code.used === true;
-        await code.save();
-
         res.send(process);
     } catch(e) {
         res.status(500).send(e);
     }
+}
+
+exports.getProcessByUser = async(req,res) => {
+    try {
+        const process = await Process.findOne({ user: req.user._id});
+        if(!process) {
+            return res.status(404).send({ data: "Process not existed"});
+        }
+        res.send(process);
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
+
+exports.getAllProcess = async (req,res) => {
+    try {
+        const processes = await Process.find().populate({ path: 'user', select: 'name' }).populate({ path: 'machine',select: ['name','code']});
+        console.log(processes);
+        res.send({ data: processes });
+    } catch(e) {
+        res.status(500).send(e);
+    }   
 }
