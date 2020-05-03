@@ -51,9 +51,9 @@ $(document).ready(() => {
             { "data" : null,
               "render": function(data,type,row) {
                   if(data['iotString']) {
-                      return `<span class='badge badge-secondary'>${data['iotString']}</span>`;
+                      return `<span class='badge badge-secondary'>${data['iotString'].slice(0,20)}</span>`;
                   } else {
-                    return `<span class='btn btn-primary'><i class='fas fa-plus'></i> Add IoT stream</span>`;    
+                    return `<button class='btn btn-primary'><i class='fas fa-plus'></i> Add IoT stream</button>`;    
                   }
               }
             }
@@ -103,7 +103,7 @@ $(document).ready(() => {
 
     //enter iot modal
     
-    dataTable.on('click', 'tbody > tr > td > span', function (e) {
+    dataTable.on('click', 'tbody > tr > td > button', function (e) {
         e.preventDefault();
 
         var tr = $(this).closest('tr');

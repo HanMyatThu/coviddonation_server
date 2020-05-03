@@ -1,12 +1,6 @@
 var Client = require('azure-iothub').Client;
 var Message = require('azure-iot-common').Message;
 
-var connectionString = process.env.CONNECTIONSTRING;
-var targetDevice = 'RiceATM';
-
-var serviceClient = Client.fromConnectionString(connectionString);
-
-
 function printResultFor(op) {
     return function printResult(err, res) {
       if (err) console.log(op + ' error: ' + err.toString());
@@ -21,7 +15,10 @@ function printResultFor(op) {
     });
   }
 
-  async function sendC2D (process) {
+  async function sendC2D (process,connectionString) {
+    console.log(connectionString);
+    const serviceClient = Client.fromConnectionString(connectionString);
+
     try {
         await serviceClient.open();
         console.log('Service client connected');
@@ -30,7 +27,7 @@ function printResultFor(op) {
         message.ack = 'full';
         message.messageId = "My Message ID";
         console.log('Sending message: ' + message.getData());
-        await serviceClient.send(targetDevice, message, () => {
+        await serviceClient.send(process.machineID, message, () => {
           console.log('msg sends')
         });
     } catch(e) {

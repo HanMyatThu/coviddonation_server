@@ -13,13 +13,13 @@ exports.createProcess = async (req,res) => {
             user: req.user._id,
             machine: machine._id
         });
-        // const c2Dsg = {
-        //     tranID : process._id,
-        //     machineID: req.body.name,
-        //     userID: req.user._id,
-        //     status: process.status
-        // }
-        // await IotController.sendC2D(c2Dsg)
+        const c2Dsg = {
+            tranID : process._id,
+            machineID: req.body.name,
+            userID: req.user._id,
+            status: process.status
+        }
+        await IotController.sendC2D(c2Dsg,machine.iotString);
         await process.save();
         res.send(process);
     } catch(e) {
@@ -42,9 +42,18 @@ exports.getProcessByUser = async(req,res) => {
 exports.getAllProcess = async (req,res) => {
     try {
         const processes = await Process.find().populate({ path: 'user', select: 'name' }).populate({ path: 'machine',select: ['name','code']});
-        console.log(processes);
         res.send({ data: processes });
     } catch(e) {
         res.status(500).send(e);
     }   
+}
+
+exports.deleteProcess = async (req,res) => {
+    try {
+        const process = await Process.findById(req.params.id);
+        await process.delete();
+        res.send({ data : "successfully deleted"});
+    } catch(e) {
+        res.status(500).send(e);
+    }
 }

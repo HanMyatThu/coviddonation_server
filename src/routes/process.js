@@ -17,4 +17,7 @@ router.post('/api/process',auth,ProcessController.createProcess);
  */
 router.get('/api/admin/processes',adminauth, ProcessController.getAllProcess);
 
+router.delete('/api/admin/process/:id',adminauth, ProcessController.deleteProcess);
+
+
 module.exports = router
