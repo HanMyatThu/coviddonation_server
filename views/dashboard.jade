@@ -1,3 +1,95 @@
 extends layout
 
 block content
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
+
+    link(rel='stylesheet', href='/css/dashboard.css')
+    link(rel='stylesheet', href='/css/util.css')
+
+    .container
+        .row.box-container
+            .col-md-6
+                .wrap-container
+                    form#registerForm.register-form.validate-form
+                        span.register-form-title.p-b-16
+                            | User Registration
+                        .wrap-input100.validate-input(data-validate='Please Enter User Name')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-account-o
+                            input#name.input100(type='text', name='name')
+                            span.focus-input100(data-placeholder='Username')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Age')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-n-6-square
+                            input#age.input100(type='number', name='age')
+                            span.focus-input100(data-placeholder='Age')
+                        .wrap-input100.validate-input(data-validate='Please Enter Email')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-email
+                            input#email.input100(type='email', name='email')
+                            span.focus-input100(data-placeholder='Email')
+                        .wrap-input100.validate-input(data-validate='Please Enter Password')
+                            span.btn-show-pass
+                                i.zmdi.zmdi-eye
+                            input#password.input100(type='password', name='password')
+                            span.focus-input100(data-placeholder='Password')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your NRC')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-account-box-mail
+                            input#nationalID.input100(type='text', name='nationalID')
+                            span.focus-input100(data-placeholder='NRC')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Township')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-home
+                            input#township.input100(type='text', name='township')
+                            span.focus-input100(data-placeholder='Township')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Street')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-home
+                            input#street.input100(type='text', name='street')
+                            span.focus-input100(data-placeholder='Street')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your City')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-home
+                            input#city.input100(type='text', name='city')
+                            span.focus-input100(data-placeholder='City')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Country')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-home
+                            input#country.input100(type='text', name='country')
+                            span.focus-input100(data-placeholder='Country')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Phone Number')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-phone
+                            input#phone.input100(type='text', name='phone')
+                            span.focus-input100(data-placeholder='Phone Number')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Family Number')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-accounts-alt
+                            input#familyNo.input100(type='text', name='familyNo')
+                            span.focus-input100(data-placeholder='Family No')
+                        .container-login100-form-btn
+                            .wrap-login100-form-btn
+                                .login100-form-bgbtn
+                                button.login100-form-btn(type='submit')
+                                    | Register
+
+            .col-md-6
+                .wrap-container
+                    form.register-form.validate-form
+                        span.register-form-title.p-b-16
+                            | Enter Code to Withdraw Rice
+                        .wrap-input100.validate-input(data-validate='Please Enter Machine ID')
+                            input#machineID.input100(type='text', name='machineID')
+                            span.focus-input100(data-placeholder='Machine ID')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Code')
+                            input#code.input100(type='number', name='code')
+                            span.focus-input100(data-placeholder='Code')
+                        .container-login100-form-btn
+                            .wrap-login100-form-btn
+                                .login100-form-bgbtn
+                                button.login100-form-btn(type='submit')
+                                    | Submit
+                                    
+    script(src='/js/admins/userregister.js')

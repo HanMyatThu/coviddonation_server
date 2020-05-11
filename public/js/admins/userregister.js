@@ -1,45 +1,56 @@
-let token = Cookies.get('admintoken');
-if(token) {
-  window.location.replace('/admin/process');
-}
 $(document).ready(() => {
-    let admin;
-    //login
-    $('#LoginForm').submit(e => {
+    $('#registerForm').submit(e => {
         e.preventDefault();
-        
+        const name = $('#name').val();
+        const age = $('#age').val();
+        const email = $('#email').val();
         const password = $('#password').val();
+        const nationalID = $('#nationalID').val();
+        const township = $('#township').val();
+        const street = $('#street').val();
+        const city = $('#city').val();
+        const country = $('#country').val();
         const phone = $('#phone').val();
+        const familyNo = $('#familyNo').val();
 
-        const LoginData = {
+        
+        //alert(name+ age + email + password + nrc + township + street + city + country + phone + familyNo);
+
+        const RegisterData = {
+            name,
+            age,
+            nationalID,
+            township,
+            street,
+            city,
+            country,
             phone,
+            familyNo,
+            email,
             password
         }
-       
-        axios.post('/api/admins/admin/login', LoginData)
+        axios.post('/users/register', RegisterData)
             .then(response => {
-                Cookies.set('admintoken',response.data.token , {expires:1} );
-                Cookies.set('admin',JSON.stringify(response.data.admin) , {expires:1} );
-               
+
                 $('#successModal').modal('show');
-                $('#successModalTitle').html('Login Successfully');
-                $('#successModalContent').html('Your login is successful. You will be redirected to admin page in a few second.');
+                $('#successModalTitle').html('Register Successfully');
+                $('#successModalContent').html('Your Registeration is successful.');
 
                 setTimeout(() => {
-                    window.location.replace('/admin/dashboard');
-                },1500)
+                    window.location.reload();
+                },1500);
+
             }).catch(e => {
                 $('#errorModal').modal('show');
-                $('#errorModalTitle').html('Login Failed');
-                $('#errorModalContent').html('Wrong Phone & Password. Please try relogin again.');
+                $('#errorModalTitle').html('Register Failed');
+                $('#errorModalContent').html('Wrong Registration. Please try again.');
 
                 setTimeout(() => {
                     window.location.reload();
                 },1500);
             })
-    })
-     /*==================================================================
-    [ Focus input ]*/
+    });
+
     $('.input100').each(function(){
         $(this).on('blur', function(){
             if($(this).val().trim() != "") {
@@ -119,4 +130,4 @@ $(document).ready(() => {
         }
         
     });
-})
+});
