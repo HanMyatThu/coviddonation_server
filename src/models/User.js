@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const validator = require('validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Code = require('../models/Code');
+const Process = require('../models/Process');
 
 const UserSchema = mongoose.Schema({
     name: {
@@ -56,12 +58,7 @@ const UserSchema = mongoose.Schema({
     email : {
         type : String,
         trim : true,
-        unique : true,
-        validate(value) {
-            if(!validator.isEmail(value)){
-                throw new Error ('Enter Email')
-            }
-        }
+        unique : false,
     },
     password: {
         type: String,
@@ -147,11 +144,11 @@ UserSchema.pre('save', async function(next) {
     next()
 })
 
-// Delete user tasks when user is removed
+// Delete codes and process when user is removed
 UserSchema.pre('remove',async function(next){
     const user = this
     await Code.deleteOne({ owner: user._id});
-
+    await Process.deleteMany({ user: user._id });
     next()
 })
 

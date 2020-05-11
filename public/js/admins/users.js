@@ -1,7 +1,6 @@
 $(document).ready(() => {
 
     let token = Cookies.get('admintoken');
-
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+token
@@ -21,6 +20,12 @@ $(document).ready(() => {
         
         },
         "columns": [
+            {
+                "className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
             { "data": "_id"},
             { "data": null,
               "render": function(data,type,row) {
@@ -50,7 +55,6 @@ $(document).ready(() => {
                 return `${data.township},${data.city}`
               }
             },
-            { "data": "email"},
             { "data": "phone" },           
             { "data": "familyNo" },
         ],
@@ -73,12 +77,19 @@ $(document).ready(() => {
         axios.put(`/api/admin/users/${data._id}/approved`,dumpData,{ headers})
             .then(response => {
                 
-                $('#successModal').modal('show');
-                $('#successModalTitle').html('User approval succeeded');
-                $('#successModalContent').html('Your approval of user is success with a request code for machine');
-
-                dataTable.ajax.reload();
-                
+                const codeData = {
+                    owner: data._id
+                }
+                axios.post('/api/admin/codes',codeData,{headers})
+                    .then(response => {
+                        $('#successModal').modal('show');
+                        $('#successModalTitle').html('User approval succeeded');
+                        $('#successModalContent').html('Your approval of user is success with a request code for machine');
+        
+                        dataTable.ajax.reload();
+                    }).catch(e => {
+                        console.log(e);
+                    }); 
             }).catch(e => {
                 $('#errorModal').modal('show');
                 $('#errorModalTitle').html('User approval failed');
@@ -86,33 +97,31 @@ $(document).ready(() => {
             });
     })
 
-    // // Add event listener for opening and closing details
-    // dataTable.on('click', 'td.details-control', function () {
-    //     var tr = $(this).closest('tr');
-    //     var row = dataTable.row( tr );
-    //     let data = row.data();
-    //     console.log(data);
+    // Add event listener for opening and closing details
+    dataTable.on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
  
-    //     axios.get(`/api/admin/baccount/${data.id}`,{headers})
-    //         .then(response => {
-    //            data = response.data;
+        axios.get(`/api/admin/codes/user/${data._id}`,{headers})
+            .then(response => {
+               data = response.data;
 
-    //             if ( row.child.isShown() ) {
-    //                 // This row is already open - close it
-    //                 row.child.hide();
-    //                 tr.removeClass('shown');
-    //             }
-    //             else {
-    //                 // Open this row
-    //                 row.child( format(data) ).show();
-    //                 tr.addClass('shown');
-    //             }
+                if ( row.child.isShown() ) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( format(data) ).show();
+                    tr.addClass('shown');
+                }
 
-    //         }).catch(e => {
-    //             // console.log(e);
-    //     })
+            }).catch(e => {
+                // console.log(e);
+        })
         
-    // } );
+    } );
 
     // /**
     //  * Edit Merchant Subscripition
@@ -146,7 +155,7 @@ $(document).ready(() => {
     //     e.preventDefault();
     //     var data=dataTable.rows( $(this).parents('tr') ).data();
 
-    //     axios.get(`/api/admin/merchant/${data[0].id}/secret`, {headers})
+    //     axios.get(`/api/admin/merchant/${data.id}/secret`, {headers})
     //         .then(response => {
     //             console.log(response.data);
     //             $('#successModal').modal('show');
@@ -339,56 +348,50 @@ $(document).ready(() => {
     // })
 })
 
-// /* Formatting function for row details - modify as you need */
-//     const format  = ( data ) => {
-//         // `d` is the original data object for the row
-//         console.log(data);
-
-//         return '<div class="row"><div class="col-md-4"><table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-//             '<tr><td colspan="2">Merchant Balance Account 1</td></tr>'+   
-//             '<tr>'+
-//                 '<td>Bac Id:</td>'+
-//                 '<td>'+data[0].id+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Currency:</td>'+
-//                 '<td>'+data[0].accountType+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Amount:</td>'+
-//                 '<td>'+data[0].amount / 100+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Withdrawable Amount:</td>'+
-//                 '<td>'+(data[0].payoutAmount / 100).toFixed(2)+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Bank:</td>'+
-//                 '<td>'+data[0].banks+'</td>'+
-//             '</tr>'+
+/* Formatting function for row details - modify as you need */
+    const format  = ( data ) => {
+        // `d` is the original data object for the row
+        let value = '';
+        if(data.isUsed) {
+            value = 'Already Used'
+        } else {
+            value = 'Not Used Yet'
+        }
+        return '<div class="row"><div class="col-md-4"><table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr><td colspan="2" class="bg-info text-white">User Current Code</td></tr>'+   
+            '<tr>'+
+                '<td>Code:</td>'+
+                '<td>'+data.text+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Is Code Used:</td>'+
+                '<td>'+value+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Code Created Date</td>'+
+                '<td>'+changeDateFormat(data.createdAt)+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Code Expired Date</td>'+
+                '<td>'+expiredDateFormat(data.createdAt)+'</td>'+
+            '</tr>'+
             
-//         '</table></div>'+
-//         '<div class="col-md-4"><table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-//             '<tr><td colspan="2">Merchant Balance Account 1</td></tr>'+
-//             '<tr>'+
-//             '<td>Bacc Id:</td>'+
-//             '<td>'+data[1].id+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Currency:</td>'+
-//                 '<td>'+data[1].accountType+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Amount:</td>'+
-//                 '<td>'+data[1].amount / 100+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Withdrawable Amount:</td>'+
-//                 '<td>'+(data[1].payoutAmount / 100).toFixed(2)+'</td>'+
-//             '</tr>'+
-//             '<tr>'+
-//                 '<td>Bank:</td>'+
-//                 '<td>'+data[1].banks+'</td>'+
-//             '</tr>'+
-//         '</table></div>';
-//     }
+        '</table></div></div>'
+    }
+
+    const changeDateFormat = (isoString) => {
+        let date = new Date(isoString);
+        let day = date.getFullYear()+'.'+(date.getMonth()+1)+'.'+date.getDate();
+        let time = date.getHours()+':'+(date.getMinutes()+1)+':'+date.getSeconds();
+        let fulldate = day+' '+time;
+        return fulldate;
+    }
+
+    const expiredDateFormat = (isoString) => {
+        let transactionDate = new Date(isoString);
+        let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 7);
+        let date = nextWeek.getFullYear()+'-'+(nextWeek.getMonth()+1)+'-'+nextWeek.getDate();
+        let time = transactionDate.getHours()+':'+(transactionDate.getMinutes()+1)+':'+transactionDate.getSeconds();
+        let todayDate = date+' '+time;
+        return todayDate;
+    }

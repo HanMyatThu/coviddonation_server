@@ -32,12 +32,20 @@ html(lang='en')
             | Admin DashBoard 
             i.fas.fa-home
         
-    .sidebar
+    .sidebar    
         ul
+            li
+                a(href='/admin/dashboard')
+                    i.fas.fa-home
+                    span Dashboard
             li
                 a(href='/admin/process')
                     i.fas.fa-server
                     span Processes
+            li
+                a(href='/admin/codes')
+                    i.fas.fa-file
+                    span Access Codes
             li
                 a(href='/admin/machines')
                     i.fas.fa-truck

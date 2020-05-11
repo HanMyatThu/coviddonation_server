@@ -11,6 +11,11 @@ const processSchema = mongoose.Schema({
         required: true,
         ref: 'machines'
     },
+    code : {
+        type : mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'codes'
+    },
     status: {
         type: String,
         default : 'processing'

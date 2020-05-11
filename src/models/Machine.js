@@ -5,11 +5,6 @@ const machineSchema = mongoose.Schema({
         type : String,
         trim: true,
     },
-    code : {
-        type: String,
-        trim: true,
-        required: true,
-    },
     location : {
         type : String,
         required : true,
@@ -27,12 +22,12 @@ const machineSchema = mongoose.Schema({
 })
 
 
-// // relationship chate
-// machineSchema.virtual('codes',{
-//     ref: 'codes',
-//     localField: '_id',
-//     foreignField: 'machine'
-// })
+// relationship chate
+machineSchema.virtual('processes',{
+    ref: 'processes',
+    localField: '_id',
+    foreignField: 'machine'
+})
 
 
 // // Delete user tasks when user is removed

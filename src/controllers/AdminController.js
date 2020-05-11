@@ -32,3 +32,15 @@ exports.AdminLogout = async (req,res) => {
     }
 }
 
+
+
+exports.AdminLogoutAll = async (req,res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+
+        res.send('Successfully logout');
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}

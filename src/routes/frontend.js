@@ -13,7 +13,6 @@ router.get('/admin/dashboard', (req,res)=> {
     res.render('dashboard');
 })
 
-
 router.get('/admin/users', (req,res)=> {
     res.render('users');
 })
@@ -21,6 +20,10 @@ router.get('/admin/users', (req,res)=> {
 
 router.get('/admin/machines', (req,res)=> {
     res.render('machine');
+})
+
+router.get('/admin/codes', (req,res) => {
+    res.render('code');
 })
 
 router.get('/admin/process', (req,res)=> {

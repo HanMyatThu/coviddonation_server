@@ -17,6 +17,8 @@ router.post('/api/process',auth,ProcessController.createProcess);
  */
 router.get('/api/admin/processes',adminauth, ProcessController.getAllProcess);
 
+router.put('/api/admin/logicapp/processes', ProcessController.updateProccessById);
+
 router.delete('/api/admin/process/:id',adminauth, ProcessController.deleteProcess);
 
 

@@ -37,7 +37,6 @@ $(document).ready(() => {
         },
             { "data": "_id"},
             { "data": "name" },
-            { "data": "code"},
             { "data" : null,
               "render" : function(data,type,row) {
                   if(data['status'] === 'Working') {
@@ -55,6 +54,16 @@ $(document).ready(() => {
                   } else {
                     return `<button class='btn btn-primary'><i class='fas fa-plus'></i> Add IoT stream</button>`;    
                   }
+              }
+            },
+            { "data" : null,
+              "render": function(data,type,row) {
+                return `<span class='btn btn-info custom-action-btn'><i class='fas fa-edit'>Edit</i></span>`
+              }
+            },
+            { "data" : null,
+              "render": function(data,type,row) {
+                return `<span class='btn btn-danger custom-action-btn'><i class='fas fa-trash'>Delete</i></span>`
               }
             }
         ],
@@ -113,6 +122,83 @@ $(document).ready(() => {
 
         $('#iotStringModal').modal('show');
     });
+
+
+    //edit machine
+    dataTable.on('click', 'tbody > tr > td > .btn-info', function(e) {
+        e.preventDefault();
+
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
+        currentData = data;
+        $('#UpdateName').val(data.name);
+        $('#updateIotString').val(data.iotString);
+    
+        $('#machineUpdateModal').modal('show');
+    })
+
+    //update machine
+    $('#machineUpdateForm').submit(e => {
+        e.preventDefault();
+        const name = $('#UpdateName').val();
+        const iotString = $('#updateIotString').val();
+
+        axios.put(`/api/admin/machines/${currentData._id}`,{name,iotString}, {headers})
+            .then(response => {
+                $('#machineUpdateModal').modal('hide');
+
+                $('#successModal').modal('show');
+                $('#successModalTitle').html('Success');
+                $('#successModalContent').html('A machine is updated successfully.');
+
+                dataTable.ajax.reload();
+            }).catch(e => {
+                $('#machineUpdateModal').modal('hide');
+
+                $('#errorModal').modal('show');
+                $('#errorModalTitle').html('Updating Machine Failed');
+                $('#errorModalContent').html('The process of updating machine is failed. Please check your data and retry again.');
+            })
+    }) 
+
+
+    //remove machine
+    dataTable.on('click', 'tbody > tr > td > .btn-danger', function(e) {
+        e.preventDefault();
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
+
+        currentData = data;
+        $('#machineDeleteModal').modal('show');
+    })
+
+    //remove machine form
+    $('#machineDelForm').submit(e => {
+        e.preventDefault();
+
+        const confirm = $('#confirmDel').val();
+
+        if(confirm.toLowerCase() === 'confirm') {
+            axios.delete(`/api/admin/machines/${currentData._id}`,{headers})
+                .then(response => {
+                    $('#machineDeleteModal').modal('hide');
+
+                    $('#successModal').modal('show');
+                    $('#successModalTitle').html('Success');
+                    $('#successModalContent').html('A machine is deleted successfully.');
+
+                    dataTable.ajax.reload();
+                }).catch(e => {
+                    $('#machineDeleteModal').modal('hide');
+                    
+                    $('#errorModal').modal('show');
+                    $('#errorModalTitle').html('Deleting Machine Failed');
+                    $('#errorModalContent').html('The process of deleting machine is failed. Please check your data and retry again.');
+                })
+        }
+    })
 
     //update iotString
     $('#iotForm').submit(e => {

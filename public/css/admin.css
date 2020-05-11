@@ -639,3 +639,8 @@ footer {
  .mini-footer p a:hover {
   color:#34bfa3
  }
+ .custom-action-btn {
+   font-size: 11px !important;
+   border-radius: 10px !important;
+   padding: 4px 7px !important;
+ }

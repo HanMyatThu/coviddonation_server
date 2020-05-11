@@ -32,9 +32,11 @@ html(lang='en')
                                     i.fas.fa-key.fa-lg.fa-fw(aria-hidden='true')
                                 .form-group.mt-2#loginFormGroup.text-right
                                     button.btn.btn-success.mr-2(type='submit') LOGIN
-                                    a.btn.btn-primary(href="/admin/register") Register
+                                    //- a.btn.btn-primary(href="/admin/register") Register
                                 .text-center.mt-4
                                     small If you can't login, please contact support@pleodata.com
+    include ./utils/error
+    include ./utils/success
   script(src="/plugins/js/axios.min.js")  
   script(src="/plugins/js/cookie.js")    
   script(src='/js/admins/login.js')

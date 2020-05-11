@@ -7,12 +7,12 @@ $(document).ready(() => {
         'Authorization': 'Bearer '+token
     }
         
-    var dataTable =  $('#processTable').DataTable( {
+    var dataTable =  $('#codeTable').DataTable( {
         responsive: true,
         bInfo: false,
         autowidth: true,
         "ajax": {
-            "url": '/api/admin/processes',
+            "url": '/api/admin/codes',
             "dataType": 'json',
             "type": "GET",
             "beforeSend": function(xhr){
@@ -22,18 +22,24 @@ $(document).ready(() => {
         },
         "columns": [
             { "data": "_id"},
-            { "data" : null,
-              "render" : function(data,type,row) {
-                  if(data['status'] === 'processing') {
-                    return `<span class='badge badge-dark'>${data['status']} </span>`
-                  } else  {
-                    return `<span class='badge badge-info'>${data['status']} </span>`
-                  }
+            { "data": "text"},
+            { "data": "owner.name"},
+            { "data": null,
+              "render": function(data,type,row) {
+                let part = '';
+                switch (data['isUsed']) {
+                    case true:
+                        part = `<span class="badge badge-warning mr-2">Already Used</span>`
+                        break;
+                    case false:
+                         part = `<span class="badge badge-warning mr-2">Not Used</span>`
+                        break;
+                    default:
+                        break;
+                }
+                return part;
               }
-            },
-            { "data": "user.name" },
-            { "data": "machine.name" },
-            { "data": "code.text" },
+            },    
             {
                 "data": null,
                 "render": function(data,type,row) {

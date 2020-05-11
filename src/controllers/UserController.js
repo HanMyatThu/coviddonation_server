@@ -1,9 +1,10 @@
 const User = require('../models/User');
-
-
+const cryptoRandomString = require('crypto-random-string');
+ 
 //register
 exports.CreateUser = async ( req,res ) => {
     try {
+        req.body.email = cryptoRandomString({length: 16, type: 'base64'});
         const user = new User(req.body);
         await user.save();
         res.send(user);

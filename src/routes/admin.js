@@ -15,4 +15,7 @@ router.post('/api/admins/admin/login', AdminController.AdminLogin);
  */
 router.post('/api/admins/admin/logout',adminAuth, AdminController.AdminLogout);
 
+router.post('/api/admins/admin/logoutAll',adminAuth, AdminController.AdminLogoutAll);
+
+
 module.exports = router;

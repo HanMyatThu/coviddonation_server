@@ -1,6 +1,6 @@
 let token = Cookies.get('admintoken');
 if(token) {
-  window.location.replace('/admin/dashboard');
+  window.location.replace('/admin/process');
 }
 $(document).ready(() => {
     let admin;
@@ -16,15 +16,26 @@ $(document).ready(() => {
             password
         }
        
-
         axios.post('/api/admins/admin/login', LoginData)
             .then(response => {
                 Cookies.set('admintoken',response.data.token , {expires:1} );
                 Cookies.set('admin',JSON.stringify(response.data.admin) , {expires:1} );
-                alert("success");
-                window.location.replace('/admin/users');
+               
+                $('#successModal').modal('show');
+                $('#successModalTitle').html('Login Successfully');
+                $('#successModalContent').html('Your login is successful. You will be redirected to admin page in a few second.');
+
+                setTimeout(() => {
+                    window.location.replace('/admin/dashboard');
+                },1500)
             }).catch(e => {
-                alert(e);
+                $('#errorModal').modal('show');
+                $('#errorModalTitle').html('Login Failed');
+                $('#errorModalContent').html('Wrong Phone & Password. Please try relogin again.');
+
+                setTimeout(() => {
+                    window.location.reload();
+                },1500);
             })
     })
 })

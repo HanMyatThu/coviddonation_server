@@ -19,10 +19,11 @@ block content
                             th
                             th ID
                             th Machine ID
-                            th Machine Code
                             th Status
                             th Location
                             th IotStream  
+                            th Edit
+                            th Delete
                         tbody 
     
              //New Machine Modal
@@ -84,6 +85,45 @@ block content
                                         input#iotNewStirng.form-control(type='text' ,name="iotNewStirng",required='')
                                 .form-group.text-right
                                     button.btn.btn-primary(type='submit') Save
+                
+            //machine Update Modal
+            #machineUpdateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='machineUpdateModalTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header.bg-info.text-center
+                            h5#machineUpdateModalTitle.modal-title(style="color:white") Update Machine
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            form#machineUpdateForm
+                                .form-group.row.mt-3
+                                    label.col-sm-4.col-form-label(for='machineName') Enter Machine ID
+                                    .col-sm-8
+                                        input#UpdateName.form-control(type="text",name="machineName",required='',placeholder='BTH_12')
+                                .form-group.row.mt-3.mb-3
+                                    label.col-sm-4.col-form-label(for='iotString') Enter IotString
+                                    .col-sm-8
+                                        input#updateIotString.form-control(type='text' ,name="iotString",required='')
+                                .form-group.text-right
+                                    button.btn.btn-primary(type='submit') Save
+
+        
+            //machine Update Modal
+            #machineDeleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='machineDeleteModalTitle', aria-hidden='true')
+                .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header.bg-danger.text-center
+                            h5#machineDeleteModalTitle.modal-title(style="color:white") Are you sure you want to delete machine?
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            form#machineDelForm
+                                .form-group.mt-3
+                                    label.form-label(for='confirmDel') Enter confirm to delete machine.
+                                    input#confirmDel.form-control(type="text",name="confirmDel",required='',placeholder='confirm')
+                                .form-group.text-right
+                                    button.btn.btn-primary(type='submit') Save
+        
     script(src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" type='text/javascript')
     script(src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" type="text/javascript")
     script(src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js" type="text/javascript") 

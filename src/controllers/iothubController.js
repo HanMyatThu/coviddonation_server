@@ -21,12 +21,10 @@ function printResultFor(op) {
 
     try {
         await serviceClient.open();
-        console.log('Service client connected');
         await serviceClient.getFeedbackReceiver(receiveFeedback);
         var message = new Message(`{\"tranID\":\"${process.tranID}\",\"machineID\":\"${process.machineID}\",\"userID\":\"${process.userID}\",\"status\":\"${process.status}\"}`);
         message.ack = 'full';
         message.messageId = "My Message ID";
-        console.log('Sending message: ' + message.getData());
         await serviceClient.send(process.machineID, message, () => {
           console.log('msg sends')
         });
