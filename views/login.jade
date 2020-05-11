@@ -1,0 +1,50 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title RiceATM-ADMIN | Login
+
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
+    link(rel='stylesheet', href='/css/adminlogin.css')
+
+    script(src="/plugins/js/jquery.min.js")
+    script(src="/plugins/js/popper.min.js")
+    script(src="/plugins/js/bootstrap.min.js")
+   body#LoginPage
+    .limiter
+  .container-login100
+    .wrap-login100
+      form#LoginForm.login100-form.validate-form(action="")
+        span.login100-form-title.p-b-16
+          | Login To DashBoard
+        .wrap-input100.validate-input(data-validate='Please Enter Phone Number')
+          span.btn-show-detail
+            i.zmdi.zmdi-phone
+          input#phone.input100(type='number', name='phone')
+          span.focus-input100(data-placeholder='Phone Number')
+        .wrap-input100.validate-input(data-validate='Please Enter Password')
+          span.btn-show-pass
+            i.zmdi.zmdi-eye
+          input#password.input100(type='password', name='pass')
+          span.focus-input100(data-placeholder='Password')
+        .container-login100-form-btn
+          .wrap-login100-form-btn
+            .login100-form-bgbtn
+            button.login100-form-btn(type='submit')
+              | LOGIN
+        .text-center.p-t-10
+          .txt2
+            | If you can't login, please contact support@pleodata.com
+    
+    include ./utils/error
+    include ./utils/success
+  script(src="/plugins/js/axios.min.js")  
+  script(src="/plugins/js/cookie.js")    
+  script(src='/js/admins/login.js')
+   
