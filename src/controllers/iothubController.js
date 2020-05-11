@@ -31,19 +31,6 @@ function printResultFor(op) {
     } catch(e) {
       console.error('Could not connect: ' + e);
     }
-    // serviceClient.open(function (err) {
-    //   if (err) {
-    //     console.error('Could not connect: ' + err.message);
-    //   } else {
-    //     console.log('Service client connected');
-    //     serviceClient.getFeedbackReceiver(receiveFeedback);
-    //     var message = new Message(`{\"tranID\":\"${tranID}\",\"machineID\":\"${machineID}\",\"userID\":\"${userID}\",\"status\":\"${status}\"}`);
-    //     message.ack = 'full';
-    //     message.messageId = "My Message ID";
-    //     console.log('Sending message: ' + message.getData());
-    //     serviceClient.send(targetDevice, message, printResultFor('send'));
-    //   }
-    // });
   }
 
 module.exports = {sendC2D};

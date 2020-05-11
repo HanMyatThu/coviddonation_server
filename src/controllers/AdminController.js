@@ -44,3 +44,21 @@ exports.AdminLogoutAll = async (req,res) => {
         res.status(500).send(e);
     }
 }
+
+exports.updateSetting = async(req,res) => {
+    const updates = Object.keys(req.body);
+    const fillables = ['setting'];
+    const isValidate = updates.every((update)=>fillables.includes(update))
+
+    if(!isValidate){
+        return res.status(400).send({error: 'Invalid updates'})
+    }
+
+    try{
+        req.user.setting = req.body.setting;
+        await req.user.save();
+        res.send({ data : "A Machine is updated"});
+    }catch(e){
+        res.status(500).send({ error :e })
+    }
+}

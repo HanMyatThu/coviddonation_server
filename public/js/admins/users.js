@@ -82,13 +82,23 @@ $(document).ready(() => {
                 }
                 axios.post('/api/admin/codes',codeData,{headers})
                     .then(response => {
-                        $('#successModal').modal('show');
-                        $('#successModalTitle').html('User approval succeeded');
-                        $('#successModalContent').html('Your approval of user is success with a request code for machine');
-        
-                        dataTable.ajax.reload();
+                        const code = response.data;
+                        
+                        const SMSData = {
+                            phone : data.phone,
+                            content : `စာရင်းပေးသွင်းခြင်းအောင်မြင်ပါသည်။ ကုတ်နံပါတ် ${code.text} ကိုသုံးပြီး ဆန်ထုတ်ယူနိုင်ပါပြီ။`
+                        }
+                        axios.post('/api/admin/msg-service/sms/send',SMSData,{headers})
+                            .then(response => {
+
+                                $('#successModal').modal('show');
+                                $('#successModalTitle').html('User approval succeeded');
+                                $('#successModalContent').html('Your approval of user is success with a request code for machine');
+                                dataTable.ajax.reload();
+
+                            }).catch(e => {
+                            })
                     }).catch(e => {
-                        console.log(e);
                     }); 
             }).catch(e => {
                 $('#errorModal').modal('show');
