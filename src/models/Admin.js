@@ -55,6 +55,10 @@ const adminSchema = mongoose.Schema({
             type : String,
         }
     }],
+    setting : {
+        type: Number,
+        default: 3
+    }
 })
 
 adminSchema.methods.generateAuthToken = async function() {

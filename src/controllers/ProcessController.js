@@ -99,3 +99,45 @@ exports.updateProccessById = async (req,res) => {
         res.status(500).send({ error :e })
     }
 }
+
+exports.createProcessFromAdmin = async(req,res) => {
+    try {
+        const machine = await Machine.findOne({name : req.body.name });
+        if(!machine || machine.status === 'unavailable' || machine.status === 'failed') {
+            return res.status(404).send({ error : "You code is not for that machine"});
+        }
+        const previousProcess = await Process.find({ user: req.body._id}).sort({_id:-1}).limit(1);
+        if(previousProcess.length !== 0) {
+            if(previousProcess[0].status === 'processing' || previousProcess[0].status === 'unavailable') {
+                return res.status(500).send({ error : "You are not ready for this action"});
+            }
+        }
+
+        //code update
+        const code = await Code.findOne({ text : req.body.code, owner: req.body._id});
+        if(!code) {
+            return res.status(404).send({ error : "You code is not for that user"});
+        }
+       
+        code.isUsed = false;
+        await code.save();
+
+        const newprocess = new Process({
+            user: req.body._id,
+            machine: machine._id,
+            code : code._id,
+            status: "completed"
+        });
+        const c2Dsg = {
+            tranID : process._id,
+            machineID: req.body.name,
+            userID: req.body._id,
+            status: process.status
+        }
+        await IotController.sendC2D(c2Dsg,machine.iotString);
+        await newprocess.save();
+        res.send({newprocess,code});
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}

@@ -40,6 +40,7 @@ const FrontRoute = require('./src/routes/frontend');
 const MachineRoute = require('./src/routes/machines');
 const ProcessRoute = require('./src/routes/process');
 const CodeRoute = require('./src/routes/code');
+const SMSRoute = require('./src/routes/sms');
 
 app.use(userRoutes);
 app.use(AdminRoute);
@@ -47,6 +48,7 @@ app.use(FrontRoute);
 app.use(MachineRoute);
 app.use(CodeRoute);
 app.use(ProcessRoute);
+app.use(SMSRoute);
 
 server.listen(port , () => {
     console.log('server running on the port', port);

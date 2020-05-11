@@ -23,6 +23,8 @@ router.post('/users/logoutAll', userauth, UserController.UserLogoutAll);
 /**
  * Admin Routes
  */
+router.post('/api/admin/users',adminauth,UserController.CreateUser);
+
 router.get('/api/admin/users',adminauth, UserController.getAllUser);
 
 router.get('/api/admin/users/:id',adminauth, UserController.getUserById);
