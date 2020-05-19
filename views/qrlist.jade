@@ -14,7 +14,7 @@ block content
                 .col-md-4.mb-2
                     label(for="#filterSelector") Choose Filter
                     select#filterSelector.form-control(placeholder="Choose Filter")
-                        option(value='qruser') Qr Users
+                        option(value='qrlist') Activated Qr List
                         option(value='time') By Time Duration
                 .col-md-4.mb-2.nodisplay#secondOption
                     .form-group
@@ -52,8 +52,8 @@ block content
                             th Delete
                         tbody 
             
-            //Process Delete Modal
-            #processDeleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='processDeleteModalTitle', aria-hidden='true')
+            //QR Delete Modal
+            #qrDeleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='qrDeleteModalTitle', aria-hidden='true')
                 .modal-dialog.modal-dialog-centered(role='document')
                     .modal-content
                         .modal-header.bg-danger.text-center
