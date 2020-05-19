@@ -70,10 +70,52 @@ $(document).ready(() => {
         select: true,
     } );
 
-     //remove process
-     dataTable.on('click', 'tbody > tr > td > .btn-success', function(e) {
+    dataTable.on('click', 'tbody > tr > td > .btn-success', function(e) {
         e.preventDefault();
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
         
+        const id = data._id;
+        const phone = data.user.phone;
+
+        axios({
+            url: `/api/download/qrcode/qr/${id}/${phone}`,
+            method: 'GET',
+            responseType: 'blob', // important
+            headers
+          }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${phone}.png`);
+            document.body.appendChild(link);
+            link.click();
+
+            $('#successModal').modal('show');
+            $('#successModalTitle').html('Success Process');
+            $('#successModalContent').html('Your process is success. Qr code is generated');
+            setTimeout(() => {
+                window.location.reload();   
+            },1500);
+          }).catch(e => {
+            const error = e.toString();
+            if(error.includes('400')) {
+              $('#errorModal').modal('show');
+              $('#errorModalTitle').html('Failed');
+              $('#errorModalContent').html('Your process is failed. User with phone no already existed');
+              setTimeout(() => {
+                  window.location.reload();
+              },1500);
+            } else {
+              $('#errorModal').modal('show');
+              $('#errorModalTitle').html('Failed');
+              $('#errorModalContent').html('Your process is failed. Please try again');
+              setTimeout(() => {
+                  window.location.reload();
+              },1500);
+            }
+          });
     })
 
 })
