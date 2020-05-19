@@ -94,3 +94,16 @@ exports.updateQrById = async(req,res) => {
         res.status(400).send({ error :e })
     }
 }
+
+exports.getQrList = async(req,res) => {
+    try {
+        const processes = await Qr.find({activate : 'true'})
+                        .populate({ path: 'user', select: ['name', 'phone'] })
+                        .populate({ path: 'machine',select: ['name','status']})
+                        .populate({ path: 'code',select: ['text', 'isUsed']});
+
+        res.send({ data: processes});
+    } catch(e) {
+        res.status(500).send(e);
+    }
+};
