@@ -76,8 +76,6 @@ exports.downloadPNG = async(req,res) => {
     }
 }
 
-
-
 exports.downloadPNGDefault = async(req,res) => {
   const image = path.join(__dirname,'default-qr.png');
     try {
@@ -103,6 +101,32 @@ exports.downloadPNGDefault = async(req,res) => {
         });
         const file  = await fs.createReadStream(image);
         res.writeHead(200, {'Content-disposition': `attachment; filename=qr-default.png`});
+        file.pipe(res); 
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
+
+exports.downloadPNGByID = async(req,res) => {
+  const image = path.join(__dirname,'qr.png');
+    try {
+      const id = req.params.qrid;
+      const phone = req.params.phone; 
+        const option1 = await cryptoRandomString({length: 10, type: 'url-safe'});
+        const option2 = await cryptoRandomString({length: 10, type: 'url-safe'});
+        const qrText = `https://riceatm-admin.azurewebsites.net/process/qr/${option1}/${id}/${option2}`;
+
+        await QRCode.toFile(image,qrText,{
+          width: 220,
+          height: 220,
+          color: {
+            dark: '#000',  // Blue dots
+            light: '#fff' // Transparent background
+          }
+        });
+
+        const file  = await fs.createReadStream(image);
+        res.writeHead(200, {'Content-disposition': `attachment; filename=${phone}.png`});
         file.pipe(res); 
     } catch(e) {
         res.status(500).send(e);

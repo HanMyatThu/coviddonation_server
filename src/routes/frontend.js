@@ -49,6 +49,10 @@ router.get('/admin/qrcode', (req,res) => {
     res.render('qrcode');
 })
 
+router.get('/admin/qrlist', (req,res) => {
+    res.render('qrlist');
+})
+
 router.get('/process/qr/fail',(req,res) => {
     res.render('error',{ error : "Please try again later."})
 })

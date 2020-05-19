@@ -8,6 +8,10 @@ router.get('/api/download/qrcode/qr/:name/:phone/:township/:street',adminauth,Qr
 
 router.get('/api/download/qrcode/defaultqr',adminauth,QrCode.downloadPNGDefault);
 
+router.get('/api/download/qrcode/qr/:qrid/:phone',adminauth,QrCode.downloadPNGByID);
+
+router.get('/api/admin/qr/list',adminauth,QrController.getQrList);
+
 router.get('/api/admin/qr/:id',adminauth,QrController.getQrById);
 
 router.put('/api/admin/qr/:id',adminauth,QrController.updateQrById);
