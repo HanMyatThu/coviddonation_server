@@ -26,21 +26,6 @@ block content
                             th Download QR
                         tbody 
             
-            //QR Delete Modal
-            #qrDeleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='qrDeleteModalTitle', aria-hidden='true')
-                .modal-dialog.modal-dialog-centered(role='document')
-                    .modal-content
-                        .modal-header.bg-danger.text-center
-                            h5#processDeleteModalTitle.modal-title(style="color:white") Are you sure you want to delete process?
-                            button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                        .modal-body
-                            form#qrDelForm
-                                .form-group.mt-3
-                                    label.form-label(for='confirmDel') Enter confirm to delete process.
-                                    input#confirmDel.form-control(type="text",name="confirmDel",required='',placeholder='confirm')
-                                .form-group.text-right
-                                    button.btn.btn-primary(type='submit') Save
     include ./utils/footer
     script(src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" type='text/javascript')
     script(src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" type="text/javascript")
