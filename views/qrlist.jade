@@ -10,46 +10,20 @@ block content
             .row.mt-2.mb-2
                 .col-md-12.text-center
                     h4 Activated QR List
-            .row.mt-3.mb-3
-                .col-md-4.mb-2
-                    label(for="#filterSelector") Choose Filter
-                    select#filterSelector.form-control(placeholder="Choose Filter")
-                        option(value='qrlist') Activated Qr List
-                        option(value='time') By Time Duration
-                .col-md-4.mb-2.nodisplay#secondOption
-                    .form-group
-                        label(for="#inputOption2") Enter
-                            span.ml-2#inputText2
-                        #datetimepicker1.input-group.date(data-target-input='nearest')
-                            input#inputBox1.form-control.datetimepicker-input(type='text', data-target='#datetimepicker1')
-                            .input-group-append(data-target='#datetimepicker1', data-toggle='datetimepicker')
-                                .input-group-text
-                                    i.fas.fa-calendar
-                .col-md-4.mb-2.nodisplay#thirdOption
-                    .form-group
-                        label(for="#inputOption3") Enter
-                            span.ml-2#inputText3
-                        #datetimepicker2.input-group.date(data-target-input='nearest')
-                            input#inputBox2.form-control.datetimepicker-input(type='text', data-target='#datetimepicker2')
-                            .input-group-append(data-target='#datetimepicker2', data-toggle='datetimepicker')
-                                .input-group-text
-                                    i.fas.fa-calendar
-            .row.mt-3.mb-3
-                .col-md-12.text-left
-                    button#filterBtn.btn.btn-primary Search
+
             .row(style="margin-top:50px;")
                 .col-md-12.col-sm-12
-                    table#processTable.table.table-striped.table-bordered.table-hovered.table-responsive(style='width:100%; font-size: 14px;')
+                    table#qrTable.table.table-striped.table-bordered.table-hovered.table-responsive(style='width:100%; font-size: 14px;')
                         thead
-                            th ID
-                            th Status
-                            th Usr Name
+                            th QR ID
+                            th User Name
+                            th User Phone No
                             th Machine ID
-                            th User Code
-                            th Transaction Time
-                            th Estimated Next Transaction Time
+                            th Machine Status
+                            th Code
+                            th Is Used
+                            th Activated
                             th Download QR
-                            th Delete
                         tbody 
             
             //QR Delete Modal
@@ -61,7 +35,7 @@ block content
                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
                         .modal-body
-                            form#processDelForm
+                            form#qrDelForm
                                 .form-group.mt-3
                                     label.form-label(for='confirmDel') Enter confirm to delete process.
                                     input#confirmDel.form-control(type="text",name="confirmDel",required='',placeholder='confirm')
@@ -74,5 +48,5 @@ block content
     script(src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js" type="text/javascript")
     script(src="/plugins/js/moment.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js", type='text/javascript')
-    script(src="/js/admins/process.js")
+    script(src="/js/admins/qrlist.js")
     
