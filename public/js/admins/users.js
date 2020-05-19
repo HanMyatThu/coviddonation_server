@@ -9,7 +9,15 @@ $(document).ready(() => {
     var dataTable =  $('#userTable').DataTable( {
         responsive: true,
         bInfo: false,
+        dom: 'Bfrtip',
         autowidth: true,
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'pageLength'
+        ],
         "ajax": {
             "url": '/api/admin/users',
             "dataType": 'json',
@@ -46,8 +54,6 @@ $(document).ready(() => {
               }
             },    
             { "data": "name" },
-            { "data": "age" },
-            { "data": "nationalID" },
             { "data": 'street',
             },
             { "data": null,
@@ -57,6 +63,20 @@ $(document).ready(() => {
             },
             { "data": "phone" },           
             { "data": "familyNo" },
+            { "data": null,
+            "render": function(data,type,row) {
+                    if(data['qruser'] === true) {
+                        return `<span class='badge badge-success'><i class='fas fa-check-circle'> Correct</i><span>`
+                    } else {
+                        return `<span class='badge badge-warning'><i class='fas fa-times-circle'> None</i><span>`
+                    }
+                }
+            },
+            { "data" : null,
+              "render": function(data,type,row) {
+                return `<span class='btn btn-danger custom-action-btn'><i class='fas fa-trash'>Delete</i></span>`
+              }
+            }
         ],
         select: true,
     } );
@@ -86,7 +106,7 @@ $(document).ready(() => {
                         
                         const SMSData = {
                             phone : data.phone,
-                            content : `စာရင်းပေးသွင်းခြင်းအောင်မြင်ပါသည်။ ကုတ်နံပါတ် ${code.text} ကိုသုံးပြီး ဆန်ထုတ်ယူနိုင်ပါပြီ။`
+                            content : `စာရင်းပေးသွင်းခြင်းအောင်မြင်ပါသည်။ ဆန်ထုတ်ယူရန် https://bit.ly/2T5kRUW ၏ chatboxသို့သွားပါ။`
                         }
                         axios.post('/api/admin/msg-service/sms/send',SMSData,{headers})
                             .then(response => {
@@ -133,229 +153,43 @@ $(document).ready(() => {
         
     } );
 
-    // /**
-    //  * Edit Merchant Subscripition
-    //  * Eg. Disabled Subscription
-    //  *  */ 
-    // dataTable.on('click', 'tbody > tr > td > div > div > span#editSub',function(e) {
-    //     e.preventDefault();
-        
-    //     var tr = $(this).closest('tr');
-    //     var row = dataTable.row( tr );
-    //     let data = row.data();
+    //remove user
+    dataTable.on('click', 'tbody > tr > td > .btn-danger', function(e) {
+        e.preventDefault();
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
 
-    //     let subscriptionData = {
-    //         active: false
-    //     }
+        currentData = data;
+        $('#userDeleteModal').modal('show');
+    })
 
-    //     console.log(data);
-    //     axios.put(`/api/admin/subscriptions/${data.subscriptionId}`, subscriptionData , {headers})
-    //         .then(response => {
-    //             $('#successModal').modal('show');
-    //             dataTable.ajax.reload();
-    //         }).catch(e => {
-    //             console.log(e);
-    //         })
-    // })
+    //remove user form
+    $('#userDelForm').submit(e => {
+        e.preventDefault();
 
-    // /**
-    //  * Generate Secret Key for Merchant
-    //  */
-    // dataTable.on('click', 'tbody > tr > td > button.gen_key', function(e) {
-    //     e.preventDefault();
-    //     var data=dataTable.rows( $(this).parents('tr') ).data();
+        const confirm = $('#confirmDel').val();
 
-    //     axios.get(`/api/admin/merchant/${data.id}/secret`, {headers})
-    //         .then(response => {
-    //             console.log(response.data);
-    //             $('#successModal').modal('show');
-    //             $('#successModalContent').html(`The Secret Key for merchant ${data[0].id} is ${response.data}. Please do not share with others.`);
-    //         }).catch(e => {
-    //             console.log(e);
-    //         })
-    // })
+        if(confirm.toLowerCase() === 'confirm') {
+            axios.delete(`/api/admin/users/${currentData._id}`,{headers})
+                .then(response => {
+                    $('#userDeleteModal').modal('hide');
 
-    // //add new bank to merchant
-    // dataTable.on('click', 'tbody > tr > td > button.add_bank ', function (e) {
-    //     e.preventDefault();
-        
+                    $('#successModal').modal('show');
+                    $('#successModalTitle').html('Success');
+                    $('#successModalContent').html('A user is deleted successfully.');
 
-    //     var data=dataTable.rows( $(this).parents('tr') ).data();
-    //     currentMerchantid = data[0].id;
+                    dataTable.ajax.reload();
+                }).catch(e => {
+                    $('#processDeleteModal').modal('hide');
+                    
+                    $('#errorModal').modal('show');
+                    $('#errorModalTitle').html('Deleting user Failed');
+                    $('#errorModalContent').html('The process of deleting user is failed. Please check your data and retry again.');
+                })
+        }
+    })
 
-    //     $('#newBankAccountModal').modal('toggle');
-    //     $('#errorMsg').addClass('nodisplay');
-    // } );
-
-    // dataTable.on('click', 'tbody > tr > td > button.add_sub', function(e) {
-    //     e.preventDefault();
-    
-    //     var data=dataTable.rows( $(this).parents('tr') ).data();
-    //     currentMerchantid = data[0].id;
-
-    //     $('#newSubscriptionModal').modal('toggle');
-    //     $('#errorMsg').addClass('nodisplay');
-    // })
-
-    // //select back format
-    // $('#bank_type').change(e => {
-    //     let option = e.target.value;
-    //     switch (option) {
-    //         case 0:
-    //             $('#BankImg').attr('src','/images/banks/None.png');
-    //             break;
-    //         case 'USD':
-    //             $('#BankImg').attr('src','/images/usd.jpg');
-    //             break;
-    //         case 'MMK':
-    //             $('#BankImg').attr('src','/images/mmk.png');
-    //             break;
-    //         case 'SGD':
-    //             $('#BankImg').attr('src','/images/sgd.png');
-    //             break;
-    //         default:
-    //             $('#BankImg').attr('src','/images/banks/None.png');
-    //             break
-    //     }
-    // })
-
-    // //check if bank number is anumber
-    // // $('#bank_number').on("change keyup paste", function(e){
-    // //     const input = e.target.value
-    // //     const check = $.isNumeric(input)
-    // //     if(!check) {
-    // //         $('#errorMsg').removeClass('nodisplay');
-    // //         $('#errorMsg').html('*** Please type a number ***')
-    // //     } else {
-    // //         $('#errorMsg').addClass('nodisplay');
-    // //         $('#errorMsg').html('')
-    // //     }
-    // // })
-
-    // //add bank modal
-    // $('#addnewBankForm').submit(e => {
-    //     e.preventDefault();
-
-    //     const accountType = $('#bank_type').val();
-
-    //     if(accountType === "USD") {
-    //         name = 'USD Balance Account';
-    //     } else if (accountType === 'MMK') {
-    //         name = 'MMK Balance Account';
-    //     } else if (accountType === 'SGD') {
-    //         name = 'SGD Balance Account';
-    //     }
-        
-    //     BankData = {
-    //         accountType,
-    //         name
-    //     }
-
-    //     $('#newBankAccountModal').modal('hide');
-    //     $('#confirmModal').modal('show');
-       
-    // })
-
-    // //confirm to add bank
-    // $('#confirmForm').submit(e => {
-    //     e.preventDefault();
-
-    //     const confirm = $('#confirmBox').val();
-
-    //     if(confirm === 'confirm') {
-    //        axios.post(`/api/admin/baccount/${currentMerchantid}`,BankData,{headers})
-    //         .then(response => {
-    //             $('#confirmModal').modal('hide');
-    //             $('#successModal').modal('show');
-    //             dataTable.ajax.reload();
-    //         }).catch(e => {
-    //             console.log(e)
-    //         })
-    //     } else {
-    //         $('#errorModal').modal('show');
-    //     }
-    // })
-
-    // $('#merchant_subscription').change(e => {
-    //     const type = e.target.value;
-
-    //     switch (type) {
-    //         case 0:
-    //             $('#subscription_section').addClass('no_display');
-    //             $('#subscription_service').val('');
-    //             break;
-    //         case 'MPU':
-    //             $('#subscription_section').removeClass('no_display');
-    //             $('#subscription_service').val('MPU');
-
-    //             break;
-    //         case 'International':
-    //             $('#subscription_section').removeClass('no_display');
-    //             $('#subscription_service').val('International');
-
-    //             break;
-    //         case 'Local-visa':
-    //             $('#subscription_section').removeClass('no_display');
-    //             $('#subscription_service').val('Local-visa');
-
-    //             break;
-    
-    //         default:
-    //             $('#subscription_section').addClass('no_display');
-    //             $('#subscription_service').val('');
-
-    //             break;
-    //     }
-    // })
-
-    // //add new subscription
-    // $('#subscriptionForm').submit(e => {
-    //     e.preventDefault();
-    //     const type = $('#subscription_service').val();
-    //     const start_date = $('#subscription_startdate').val();
-    //     const end_date = $('#subscription_enddate').val();
-    //     const deposit = $('#subscription_deposit').val();
-    //     const deposit_currency = $('#subscription_depositCurrency').val();
-    //     const min_transaction_size = $('#subscription_minitrans').val();
-    //     const max_transaction_size = $('#subscription_maxitrans').val();
-    //     const merchant_fees = $('#subscription_merchantfees').val();
-    //     const merchant_percentage = $('#subscription_merchantPercentage').val();
-    //     const buyer_fees = $('#buyerfees').val();
-    //     const buyer_percentage = $('#buyerPer').val();
-
-    //     const service = services.filter(ser => {
-    //         return ser.name === type;
-    //     })
-
-    //     const id = service[0].id;
-    //     const fees = service[0].fees;
-        
-    //     const subscriptionData = {
-    //         id,
-    //         start_date,
-    //         end_date,
-    //         deposit,
-    //         deposit_currency,
-    //         min_transaction_size,
-    //         max_transaction_size,
-    //         merchant_fees,
-    //         merchant_percentage,
-    //         buyer_fees,
-    //         buyer_percentage,
-    //         merchant_id : currentMerchantid,
-    //         transaction_percentage: fees,
-    //     }
-
-    //     axios.post(`/api/admin/subscriptions`,subscriptionData,{headers})
-    //         .then(response => {
-    //             console.log(response.data);
-    //             $('#newSubscriptionModal').modal('hide');
-    //             $('#successModal').modal('show');
-    //             dataTable.ajax.reload();
-    //         }).catch(e => {
-    //             console.log(e);
-    //         })
-    // })
 })
 
 /* Formatting function for row details - modify as you need */

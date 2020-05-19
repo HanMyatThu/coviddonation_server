@@ -1,0 +1,31 @@
+extends layout
+
+block content
+
+    section#section.bg_fade
+        .container
+            .row.mt-2.mb-2
+                .col-md-8.offset-md-2.col-sm-12
+                    .card
+                        .card-title.bg-secondary
+                            h6.card-header.text-white Generate QR code
+                        .card-body
+                            form#QrForm
+                                .form-group
+                                    label(for='name') Enter name
+                                    input.form-control#name(type="text" , name='name',required)
+                                .form-group
+                                    label(for='phone') Enter Phone Number
+                                    input.form-control#phone(type="number" , name='phone',required)
+                                .form-group
+                                    label(for='street') Enter Address
+                                    input.form-control#street(type="text" , name='street',required)
+                                .form-group
+                                    label(for='township') Enter Township
+                                    input.form-control#township(type="text" , name='township', value='Hlaing Thar Yar',required,disabled)
+                                .form-group.text-right
+                                    button.btn.btn-primary(type="submit") Submit
+                        .card-footer.text-right
+                            span#defaultQr.btn.btn-danger Generate Default Qr
+    script(src="/js/admins/qrcode.js")
+    

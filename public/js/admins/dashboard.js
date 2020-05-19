@@ -1,133 +1,117 @@
 $(document).ready(() => {
-    let token  = Cookies.get('admintoken');
-    $('#Trans').removeClass('nodisplay');
-    $('#totalT').removeClass('nodisplay');
+    var code = '';
+    var user = '';
+    const token = Cookies.get('admintoken');
 
-    $('#totalT1').removeClass('nodisplay');
-    $('#totalT2').removeClass('nodisplay');
-
-    $('#successT').removeClass('nodisplay');
-    $('#activeM').removeClass('nodisplay');
-
-    
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+token
     }
 
-    let today = new Date();
-    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    let todayDate = date+'_'+time;
-    let lastweekDate = getLastWeek();
+    $('#registerForm').submit(e => {
+        e.preventDefault();
+        const name = $('#name').val();
+        const password = '123456'
+        const township = $('#township').val();
+        const phone = $('#phone').val();
+        const familyNo = $('#familyNo').val();
 
-    function getLastWeek() {
-        let today = new Date();
-        let lastWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-        let date = lastWeek.getFullYear()+'-'+(lastWeek.getMonth()+1)+'-'+lastWeek.getDate();
-        let time = lastWeek.getHours() + ":" + lastWeek.getMinutes() + ":" + lastWeek.getSeconds();
-        let todayDate = date+'_'+time;
-        return todayDate;
-    } 
-    //get all
-    axios.get(`/api/admin/balancetransactions/admin00002`, {headers})
-    .then(response => {
-        let hold,needToConfirm,succeeded ;
-        hold = response.data.data.filter(balT => {
-            return balT.status === "Hold";
-        })
-        needToConfirm = response.data.data.filter(balT => {
-            return balT.status === "NeedToConfirm";
-        })
-        succeeded = response.data.data.filter(balT => {
-            return balT.status === "Succeeded";
-        })
+        
+        //alert(name+ age + email + password + nrc + township + street + city + country + phone + familyNo);
 
-        setTimeout(() => {
-            $('#totalT').addClass('nodisplay');
-            $('#totalT-text').html(hold.length);
-            $('#totalT1').addClass('nodisplay');
-            $('#totalT1-text').html(needToConfirm.length);
-            $('#totalT2').addClass('nodisplay');
-            $('#totalT2-text').html(succeeded.length);
+        const RegisterData = {
+            name,
+            township,
+            phone,
+            familyNo,
+            password
+        }
+        axios.post('/users/register', RegisterData)
+            .then(response => {
+                user = response.data;
+                const dumpData = {
+                    "approved" : true
+                }
+                axios.put(`/api/admin/users/${response.data._id}/approved`,dumpData,{ headers})
+                    .then(response => {
+                        const codeData = {
+                            owner: user._id
+                        }
+                        axios.post('/api/admin/codes',codeData,{headers})
+                            .then(response => {
+                                code = response.data;
+                                $('#code').val(code.text);
+                                $('#processCreateBtn').attr('disabled',false);
+                                $('#successModal').modal('show');
+                                $('#successModalTitle').html('Register Successfully');
+                                $('#successModalContent').html('Your Registeration is successful.');
 
-            $('#successT').addClass('nodisplay');
-            $('#successT-text').html(succeeded.length);
-        },1000)
-    }).catch(e => {
-        console.log(e);
-    })  
+                                $('#name').val('');
+                                $('#township').val('');
+                                $('#phone').val('');
+                                $('#familyNo').val('');
+                
+                                setTimeout(() => {
+                                    $('#successModal').modal('hide');
+                                },1500);
 
-    //get all active merchants
-    axios.get('/api/admin/allusers', {headers})
-        .then(response => {
-            setTimeout(() => {
-                $('#activeM').addClass('nodisplay');
-                $('#activeM-text').html(response.data.data.length);
-            },1000)
-        }).catch(e => {
-            console.log(e);
-        })
+                            }).catch(e => {
+                            }); 
+                    }).catch(e => {
+                        $('#errorModal').modal('show');
+                        $('#errorModalTitle').html('User approval failed');
+                        $('#errorModalContent').html('Your approval of user is failed. Please contact support.');
+                    });
 
-    //get from time to time
-    axios.get(`/api/admin/balancetransactions/admin00002/${lastweekDate}/${todayDate}`, {headers})
-    .then(response => {
-        console.log(response.data);
-        transactionInAWeek = response.data.length;
-        setTimeout(() => {
-            $('#Trans').addClass('nodisplay');
-            $('#Trans-text').html(transactionInAWeek);
-        },1000) 
-        let data = [];
-        let labels = [];
-        response.data.forEach(element => {
-            let amount = parseInt(element.process_amount) / 100;
-            labels.push(element.date_time)
-            data.push(amount);
-        });
+            }).catch(e => {
+                $('#errorModal').modal('show');
+                $('#errorModalTitle').html('Register Failed');
+                $('#errorModalContent').html('Wrong Registration. Please try again.');
 
-        var ctx = document.getElementById("transChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Transaction Flow', // Name the series
-                    data: data,
-                    fill: false,
-                    borderColor: '#4ada31', // Add custom color border (Line)
-                    backgroundColor: '#da132a', // Add custom color background (Points and Fill)
-                    borderWidth: 1 // Specify bar border width
-                }]},
-            options: {
-            responsive: true, // Instruct chart js to respond nicely.
-            maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+                setTimeout(() => {
+                    window.location.reload();
+                },1500);
+            })
+    });
+
+    $('.input100').each(function(){
+        $(this).on('blur', function(){
+            if($(this).val().trim() != "") {
+                $(this).addClass('has-val');
             }
-        });
-    }).catch(e => {
-        console.log(e);
+            else {
+                $(this).removeClass('has-val');
+            }
+        })    
     })
 
-    axios.get('/api/admin/baccount',{headers})
-        .then(response => {
-            console.log(response.data);
-            response.data.forEach(balance => {
-                if(balance.currency === "USD" ) {
-                    ok = "$";
-                    exchange = 100;
-                }else if(balance.currency === "SGD") {
-                    ok = "S$";
-                    exchange = 100;
-                }else if(balance.currency === "MMK") {
-                    ok = "MMK";
-                    exchange = 1;
-                }
+    /**
+     * Create Process
+     */
+    $('#processForm').submit(e => {
+        e.preventDefault();
 
-                let balancePart = `<li class="list-group-item"><div class='row'><div class='col-md-6'><h6>${ balance.accountType } account</h6><small>${balance.id}</small></div><div class='col-md-6'><span>Amount: ${ ok +" "+ balance.amount / exchange }<span><br><small>Profit: ${ok +" "+ balance.net / exchange}</small><br><small class='text-red'>HoldAmount: ${ok +" "+ balance.holdamount / exchange}</small></div></div></li>`
-                $('#adminBalance').append(balancePart);
-            });
-        }).catch(e => {
-            console.log(e);
-        })
-    
-})
+        const name = $('#machineID').val();
+        const process ={
+            userid: user._id,
+            name,
+            code: code.text
+        }
+        
+        axios.post('/api/admin/processes',process,{headers})
+            .then(response => {
+                $('#successModal').modal('show');
+                $('#successModalTitle').html('Process Successfully');
+                $('#successModalContent').html('Withdrawing Process is successful.U can try again now.');
+
+                setTimeout(() => {
+                    window.location.reload();
+                },1500);
+            }).catch(e => {
+                console.log(e.toString());
+                $('#errorModal').modal('show');
+                $('#errorModalTitle').html('Process Failed');
+                $('#errorModalContent').html('User already withdrew Rice.Unable to do this action now. ');
+            })
+    })
+});

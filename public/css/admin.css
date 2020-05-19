@@ -644,3 +644,27 @@ footer {
    border-radius: 10px !important;
    padding: 4px 7px !important;
  }
+ .nodisplay {
+   display: none !important;
+ }
+
+
+ /***
+ Process with QR
+ ***/
+#qrsection {
+  margin-top: 150px;
+}
+
+.bg-custom-2 {
+  background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+}
+.footer_nav {
+  color: orange !important;
+}
+.footer_text {
+  color: green
+}  
+#firstEye , #secondEye {
+  cursor: pointer;
+}

@@ -16,7 +16,6 @@ function printResultFor(op) {
   }
 
   async function sendC2D (process,connectionString) {
-    console.log(connectionString);
     const serviceClient = Client.fromConnectionString(connectionString);
 
     try {

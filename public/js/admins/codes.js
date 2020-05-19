@@ -43,7 +43,7 @@ $(document).ready(() => {
             {
                 "data": null,
                 "render": function(data,type,row) {
-                    let date = new Date(data['createdAt']);
+                    let date = new Date(data['updatedAt']);
                     let day = date.getFullYear()+'.'+(date.getMonth()+1)+'.'+date.getDate();
                     let time = date.getHours()+':'+(date.getMinutes()+1)+':'+date.getSeconds();
                     let fulldate = day+' '+time;
@@ -53,7 +53,7 @@ $(document).ready(() => {
             {
                 "data": null,
                 "render": function(data,type,row) {
-                    let transactionDate = new Date(data['createdAt']);
+                    let transactionDate = new Date(data['updatedAt']);
                     let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 7);
                     let date = nextWeek.getFullYear()+'-'+(nextWeek.getMonth()+1)+'-'+nextWeek.getDate();
                     let time = transactionDate.getHours()+':'+(transactionDate.getMinutes()+1)+':'+transactionDate.getSeconds();

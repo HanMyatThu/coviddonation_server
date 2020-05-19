@@ -6,6 +6,8 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const path = require('path');
+const session = require('express-session');
+
 
 /**
  * Bind Views
@@ -22,16 +24,20 @@ app.use(helmet());
 app.use(cors());
 
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
 const port = process.env.PORT || 3000;
 
-io.on('connection', socket => {
-    console.log('a user is connected');
-    socket.on('chat message', msg => {
-        console.log(msg);
-    })
-})
+//create session for checkout
+app.use(session({
+    secret: 'plepaysess',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false,maxAge: 300000}
+}));
 
+ 
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+}
 
 //Importing APIs
 const userRoutes = require('./src/routes/users');
@@ -41,6 +47,8 @@ const MachineRoute = require('./src/routes/machines');
 const ProcessRoute = require('./src/routes/process');
 const CodeRoute = require('./src/routes/code');
 const SMSRoute = require('./src/routes/sms');
+const RequestRoute = require('./src/routes/request');
+const qrRoute = require('./src/routes/qrcode');
 
 app.use(userRoutes);
 app.use(AdminRoute);
@@ -49,6 +57,8 @@ app.use(MachineRoute);
 app.use(CodeRoute);
 app.use(ProcessRoute);
 app.use(SMSRoute);
+app.use(RequestRoute);
+app.use(qrRoute);
 
 server.listen(port , () => {
     console.log('server running on the port', port);

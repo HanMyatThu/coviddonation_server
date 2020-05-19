@@ -39,6 +39,10 @@ html(lang='en')
                     i.fas.fa-home
                     span Dashboard
             li
+                a(href='/admin/qrcode')
+                    i.fas.fa-qrcode
+                    span Qrcodes
+            li
                 a(href='/admin/process')
                     i.fas.fa-server
                     span Processes
@@ -54,6 +58,18 @@ html(lang='en')
                 a(href='/admin/users')
                     i.fas.fa-users
                     span Users
+            li
+                a(href='/admin/requests')
+                    i.fas.fa-comment-dots
+                    span Requests
+            li
+                a(href='/admin/logs')
+                    i.fas.fa-sms
+                    span SMS Logs
+            li
+                a(href='/admin/settings')
+                    i.fas.fa-tools
+                    span Setting
             li#LogoutRoute
                 a(href='')
                     i.fas.fa-key
@@ -65,6 +81,8 @@ html(lang='en')
   include ./utils/success
   
   script(src="/plugins/js/axios.min.js")
-  script(src="/plugins/js/cookie.js")    
+  script(src="/plugins/js/cookie.js")  
   script(src='/js/admins/main.js')
+  script(src='/js/admins/route.js')
+
    

@@ -1,0 +1,50 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title RiceATM | Admin
+
+    //google fonts
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap', rel='stylesheet')
+
+    //css imports
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+    link(rel='stylesheet', href='/css/admin.css')
+
+
+    script(src="/plugins/js/jquery.min.js")
+    script(src="/plugins/js/popper.min.js")
+    script(src="/plugins/js/bootstrap.min.js")
+  body
+    section#qrsection
+        .container
+            .row
+                .col-md-6.offset-md-3
+                    .card
+                        .card-title.text-center.bg-info
+                            h6.card-header.text-white QR-Scanned Process
+                        .card-body
+                            form#processForm
+                                .form-group
+                                    span#qrid.nodisplay #{data}
+                                    h6 Please click submit button
+                                .form-group.text-right
+                                    button.btn.btn-primary(type="submit") Submit
+    
+    footer.footer
+        nav.navbar.navbar-dark.fixed-bottom.bg-custom-2
+            .container
+                a.footer_nav.navbar-brand(href='http://www.pleodata.com') PleoData
+                span.footer_text To a world without covid-19
+
+  include ./utils/error
+  include ./utils/success
+  script(src="/plugins/js/axios.min.js")
+  script(src="/plugins/js/cookie.js")  
+  script(src='/js/admins/qrprocess.js')
+
+   

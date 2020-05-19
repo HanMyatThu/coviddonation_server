@@ -1,0 +1,63 @@
+extends layout
+
+
+block content
+    link(rel="stylesheet", href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css")
+    link(rel="stylesheet", href="/plugins/css/buttons-datatable.min.css")
+    link(rel="stylesheet", href="/plugins/css/bootstrap-calender.min.css")
+
+    section#section.bg_fade
+        .container
+            .row.mt-2.mb-2
+                .col-md-12
+                    h3 Settings
+
+            .row.mt-3
+                .col-md-4.col-sm-12.mt-3
+                    .card
+                        .card-title.bg-info.text-center
+                            h6.card-header.text-white Duration Between Transactions
+                        .card-body  
+                            form#settingForm
+                                .from-group.mb-4
+                                    label Enter Duration ( In days )
+                                    .input-group.mb-3
+                                        .input-group-prepend
+                                            span.input-group-text &
+                                        input#duration.form-control(type='number', disabled, required)
+
+                                .form-group
+                                    span#btnMcEdit.btn.btn-primary.mr-3 Edit
+                                    button#btnMcSubmit.btn.btn-success(type='submit',disabled) Submit
+                                    span#btnMcCancel.ml-3.btn.btn-danger.nodisplay Cancel   
+                
+                .col-md-8.col-sm-12.mt-3
+                    .card
+                        .card-title.bg-warning.text-center
+                            h6.card-header.text-white Change Password
+                        .card-body
+                            form#passwordForm
+                                .form-group.mb-4
+                                    label Enter New Password
+                                    .input-group.mb-3
+                                        .input-group-prepend
+                                            span.input-group-text
+                                                #firstEye.fas.fa-eye
+                                        input#password.form-control(type='password', required)
+                                .form-group.mb-4
+                                    label ReEnter New Password
+                                    .input-group.mb-3
+                                        .input-group-prepend
+                                            span.input-group-text
+                                                #secondEye.fas.fa-eye
+                                        input#re-password.form-control(type='password',required)
+                                .form-group
+                                    button#submitBtn.btn.btn-primary.mr-3(type='submit') Submit
+                                    span.btn.btn-danger#cancelBtn Cancel
+    script(src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" type='text/javascript')
+    script(src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" type="text/javascript")
+    script(src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js" type="text/javascript") 
+    script(src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js" type="text/javascript")
+    script(src="/plugins/js/moment.js")
+    script(src="/js/admins/setting.js")
+    

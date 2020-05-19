@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+    section#section.bg_fade
+        .container
+            .row.mt-2.mb-2
+                .col-md-8.offset-md-2.col-sm-12
+                    .card
+                        .card-title.bg-secondary
+                            h6.card-header.text-white Activating QR code
+                        .card-body
+                            form#QrForm
+                                span#qrid.nodisplay #{data}
+                                .form-group
+                                    label(for='name') Enter name
+                                    input.form-control#name(type="text" , name='name',required)
+                                .form-group
+                                    label(for='phone') Enter Phone Number
+                                    input.form-control#phone(type="number" , name='phone',required)
+                                .form-group
+                                    label(for='street') Enter Address
+                                    input.form-control#street(type="text" , name='street',required)
+                                .form-group
+                                    label(for='township') Enter Township
+                                    input.form-control#township(type="text" , name='township', value='Hlaing Thar Yar',required,disabled)
+                                .form-group
+                                    button.btn.btn-primary(type="submit") Submit
+    script(src="/js/admins/qractivate.js")
+    
