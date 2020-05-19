@@ -33,5 +33,7 @@ router.put('/api/admin/users/:id/approved', adminauth,UserController.ApprovedUse
 
 router.delete('/api/admin/users/:id', UserController.deletUser);
 
+router.put('/api/admin/users/password/reset/:id',adminauth,UserController.changeUserPassword);
+
 
 module.exports = router

@@ -13,11 +13,14 @@ router.post('/api/admins/admin/login', AdminController.AdminLogin);
 /***
  * Private routes
  */
-router.put('/api/admins/admin/setting', AdminController.updateSetting);
+router.get('/api/admins/admin/me', adminAuth,AdminController.getProfile);
+
+router.put('/api/admins/admin/setting',adminAuth, AdminController.updateSetting);
  
 router.post('/api/admins/admin/logout',adminAuth, AdminController.AdminLogout);
 
 router.post('/api/admins/admin/logoutAll',adminAuth, AdminController.AdminLogoutAll);
 
+router.post('/api/admins/admin/password/reset',adminAuth,AdminController.changePassword);
 
 module.exports = router;

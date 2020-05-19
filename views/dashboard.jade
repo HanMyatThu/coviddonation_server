@@ -1,3 +1,59 @@
 extends layout
 
 block content
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
+
+    link(rel='stylesheet', href='/css/dashboard.css')
+    link(rel='stylesheet', href='/css/util.css')
+
+    .container
+        .row.box-container
+            .col-md-6.col-sm-12
+                .wrap-container
+                    form#registerForm.register-form.validate-form
+                        span.register-form-title.p-b-16
+                            | User Registration
+                        .wrap-input100.validate-input(data-validate='Please Enter User Name')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-account-o
+                            input#name.input100(type='text', name='name',required)
+                            span.focus-input100(data-placeholder='Username')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Township')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-home
+                            input#township.input100(type='text', name='township',required)
+                            span.focus-input100(data-placeholder='Township')
+                        
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Phone Number')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-phone
+                            input#phone.input100(type='text', name='phone',required)
+                            span.focus-input100(data-placeholder='Phone Number')
+                        .wrap-input100.validate-input(data-validate='Please Enter Your Family Number')
+                            span.btn-show-detail
+                                i.zmdi.zmdi-accounts-alt
+                            input#familyNo.input100(type='text', name='familyNo',required)
+                            span.focus-input100(data-placeholder='Family No')
+                        .container-login100-form-btn
+                            .wrap-login100-form-btn
+                                .login100-form-bgbtn
+                                button.login100-form-btn(type='submit')
+                                    | Register
+
+            .col-md-6.col-sm-12
+                .wrap-container
+                    .mt-3.mb-3.text-center
+                        h5 Withdraw Rice
+                    form#processForm.register-form
+                        .form-group 
+                            label(for='machineID') Enter Machine Id
+                            input#machineID.form-control(type="text", placeholder='Enter Machine ID',name='machineId',required)
+                        .form-group 
+                            label(for='code') Enter Code
+                            input#code.form-control(type="text", placeholder='Enter Code',name='code',disabled)
+                        .form-group.mt-3
+                            button#processCreateBtn.btn.btn-success(type="submit",disabled) Submit
+                        
+                                    
+    script(src='/js/admins/dashboard.js')

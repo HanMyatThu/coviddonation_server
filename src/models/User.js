@@ -3,27 +3,14 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Code = require('../models/Code');
+const Qr = require('../models/Qr');
 const Process = require('../models/Process');
+const Request = require('../models/Request')
 
 const UserSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-    },
-    age: {
-        type : Number,
-        default : 0,
-        validate(value) {
-            if(value < 0){
-                throw new Error('Age must be a positive number')
-            }
-        }
-    },
-    nationalID: {
-        type : String,
-        unique: true,
-        trim: true,
-        lowercase: true,
     },
     township: {
         type : String,
@@ -33,6 +20,7 @@ const UserSchema = mongoose.Schema({
     },
     street :{
         type: String,
+        default : 'street'
     },
     city: {
         type : String,
@@ -54,17 +42,13 @@ const UserSchema = mongoose.Schema({
     familyNo : {
         type: Number,
         required: true,
-    },
-    email : {
-        type : String,
-        trim : true,
-        unique : false,
+        default: 1,
     },
     password: {
         type: String,
         trim: true,
         required: true,
-        minlength: 8,
+        minlength: 5,
         validate(value) {
             if(value.toLowerCase().includes('password')) {
                 throw new Error('passowrd cannot contain password' )
@@ -72,6 +56,10 @@ const UserSchema = mongoose.Schema({
         }
     },
     approved: {
+        type: Boolean,
+        default: false
+    },
+    qruser: {
         type: Boolean,
         default: false
     },
@@ -149,6 +137,8 @@ UserSchema.pre('remove',async function(next){
     const user = this
     await Code.deleteOne({ owner: user._id});
     await Process.deleteMany({ user: user._id });
+    await Request.deleteMany({ user: user._id });
+    await Qr.deleteOne({ user: user._id});
     next()
 })
 

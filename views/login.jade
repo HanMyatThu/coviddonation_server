@@ -9,35 +9,41 @@ html(lang='en')
     link(rel='icon', href='/images/pleodata.png')
     link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
     link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
-    link(rel='stylesheet', href='/css/admin.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css')
+    link(rel='stylesheet', href='/css/adminlogin.css')
 
     script(src="/plugins/js/jquery.min.js")
     script(src="/plugins/js/popper.min.js")
     script(src="/plugins/js/bootstrap.min.js")
-  body#LoginPage
-    section
-        .container.loginsection
-            .row
-                .col-md-6.offset-md-3
-                    .card
-                        .text-center.mt-5.mb-3
-                            h5 Login To DashBoard
-                        .card-body.mr-5.ml-5
-                            form#LoginForm(action="")
-                                .inputWithIcon.mb-4
-                                    input#phone.form-control(type='number', name='phone',placeholder='Enter Your phone',required='')
-                                    i.fas.fa-phone.fa-lg.fa-fw(aria-hidden='true')
-                                .inputWithIcon.mb-4
-                                    input#password.form-control(type='password',name='password', placeholder='Enter Password',required='')
-                                    i.fas.fa-key.fa-lg.fa-fw(aria-hidden='true')
-                                .form-group.mt-2#loginFormGroup.text-right
-                                    button.btn.btn-success.mr-2(type='submit') LOGIN
-                                    //- a.btn.btn-primary(href="/admin/register") Register
-                                .text-center.mt-4
-                                    small If you can't login, please contact support@pleodata.com
+   body#LoginPage
+    .limiter
+    .container-login100
+      .wrap-login100
+        form#LoginForm.login100-form.validate-form(action="")
+          span.login100-form-title.p-b-16
+            | Login To DashBoard
+          .wrap-input100.validate-input(data-validate='Please Enter Phone Number')
+            span.btn-show-detail
+              i.zmdi.zmdi-phone
+            input#phone.input100(type='number', name='phone')
+            span.focus-input100(data-placeholder='Phone Number')
+          .wrap-input100.validate-input(data-validate='Please Enter Password')
+            span.btn-show-pass
+              i.zmdi.zmdi-eye
+            input#password.input100(type='password', name='pass')
+            span.focus-input100(data-placeholder='Password')
+          .container-login100-form-btn
+            .wrap-login100-form-btn
+              .login100-form-bgbtn
+              button.login100-form-btn(type='submit')
+                | LOGIN
+          .text-center.p-t-10
+            .txt2
+              | If you can't login, please contact support@pleodata.com
+    
     include ./utils/error
     include ./utils/success
   script(src="/plugins/js/axios.min.js")  
   script(src="/plugins/js/cookie.js")    
   script(src='/js/admins/login.js')
-   

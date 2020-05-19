@@ -62,3 +62,28 @@ exports.updateSetting = async(req,res) => {
         res.status(500).send({ error :e })
     }
 }
+
+exports.getProfile = async(req,res) => {
+    try {
+        res.send(req.user);
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
+
+exports.changePassword = async (req,res) => {
+    const updates = Object.keys(req.body);
+    const fillables = ['password'];
+    const isValidate = updates.every((update)=>fillables.includes(update))
+
+    if(!isValidate){
+        return res.status(400).send({error: 'Invalid updates'})
+    }
+    try {
+        req.user.password = req.body.password;
+        await req.user.save();
+        res.send({ data: "Password reset successfully"});
+    } catch(e) {
+        res.status(500).send(e);
+    }  
+}

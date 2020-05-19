@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title RiceATM | Error
+    link(rel='icon', href='/images/pleodata.png')
+    link(rel='stylesheet', href='/plugins/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.8.2/css/all.css')
+    link(rel='stylesheet', href='/css/error.css')
+
+    //Google font
+    link(href="https://fonts.googleapis.com/css?family=Baskervville|Bebas+Neue&display=swap" rel="stylesheet")
+
+  body
+    .container
+      .row.mt-5
+        .col-md-8.offset-md-2 
+          img(src="/images/pleodata.png", height="40", width="40",alt="")
+    p
+      a(href='http://www.pleodata.com') RiceATM
+    h3.mb-5(style="font-size:30px; margin-top:150px;") Sorry, Your Process is failed.
+    h2.mt-5.mb-5 #{ error }
+    div(style="margin-top:200px;")
+      | Your Process is failed. Go Back to
+    div(style="margin-top:50px")
+      a(href='http://riceatm-admin.azurewebsites.net/admin/dashboard') Admin Dashboard
+    footer.footer.bg-dark.fixed-bottom
+      .container
+        .row.text-center
+          .col-md-12
+            .text-center.text-white.footer-alt
+              p.mb-4.text-muted.mb-0 Powered By | PleoData @ 2020

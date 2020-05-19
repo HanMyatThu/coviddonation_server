@@ -43,7 +43,7 @@ const adminSchema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8,
+        minlength: 6,
         validate(value) {
             if(value.toLowerCase().includes('password')) {
                 throw new Error('passowrd cannot contain password' )
@@ -96,8 +96,8 @@ adminSchema.methods.toJSON =  function(){
     const admin = this
     const adminObj = admin.toObject()
 
-    // delete adminObj.password
-    // delete adminObj.tokens
+    delete adminObj.password
+    delete adminObj.tokens
     return adminObj
 
 }

@@ -4,7 +4,6 @@ const cryptoRandomString = require('crypto-random-string');
 //register
 exports.CreateUser = async ( req,res ) => {
     try {
-        req.body.email = cryptoRandomString({length: 16, type: 'base64'});
         const user = new User(req.body);
         await user.save();
         res.send(user);
@@ -116,4 +115,34 @@ exports.deletUser = async (req,res) => {
     } catch(e) {
         res.status(500).send(e);
     }
+}
+
+exports.changeUserPassword = async (req,res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if(!user) {
+            return res.status(404).send({ error: "User Not Found"})
+        }
+        const newPassword = getRandomInt();
+        user.password = newPassword;
+        await user.save();
+        const userData = {
+            phone : user.phone,
+            newPassword
+        }
+        res.send(userData);
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}   
+
+/*
+* Get random 6 numbers for OTP
+*/
+function getRandomInt() {
+    let min = 100000;
+    let max = 999999;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
