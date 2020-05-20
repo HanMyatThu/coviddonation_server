@@ -10,7 +10,15 @@ block content
             .row.mt-2.mb-2
                 .col-md-12.text-center
                     h4 Users
-
+             .row.mt-3.mb-3
+                .col-md-4.mb-2
+                    label(for="#filterSelector") Choose Filter
+                    select#filterSelector.form-control(placeholder="Choose Filter")
+                        option(value='qruser' selected) Qr Users
+             
+            .row.mt-3.mb-3
+                .col-md-12.text-left
+                    button#filterBtn.btn.btn-primary Search
             .row(style="margin-top:50px;")
                 .col-md-12.col-sm-12
                     table#userTable.table.table-striped.table-bordered.table-hovered.table-responsive(style='width:100%; font-size: 14px;')
