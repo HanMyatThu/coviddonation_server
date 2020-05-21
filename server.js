@@ -7,8 +7,8 @@ const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const path = require('path');
 const session = require('express-session');
-
-
+require('events').EventEmitter.defaultMaxListeners = 15;
+const crypto = require('crypto')
 /**
  * Bind Views
  */
@@ -49,6 +49,8 @@ const CodeRoute = require('./src/routes/code');
 const SMSRoute = require('./src/routes/sms');
 const RequestRoute = require('./src/routes/request');
 const qrRoute = require('./src/routes/qrcode');
+const assistantRoute = require('./src/routes/assistant');
+const test = require('./src/utils/encrypt');
 
 app.use(userRoutes);
 app.use(AdminRoute);
@@ -59,6 +61,7 @@ app.use(ProcessRoute);
 app.use(SMSRoute);
 app.use(RequestRoute);
 app.use(qrRoute);
+app.use(assistantRoute);
 
 server.listen(port , () => {
     console.log('server running on the port', port);

@@ -4,8 +4,12 @@ const path = require('path');
 const User = require('../models/User');
 const Code = require('../models/Code');
 const Qr = require('../models/Qr');
+const crypto = require('crypto');
 const cryptoRandomString = require('crypto-random-string');
 const SMSController = require('../controllers/SmsController');
+const secretMsg = process.env.SECRET_MSG;
+const cipherString = process.env.CIPHER_STRING;
+const encrypt = require('./encrypt');
 
 exports.downloadPNG = async(req,res) => {
   const image = path.join(__dirname,'qr.png');
@@ -87,10 +91,8 @@ exports.downloadPNGDefault = async(req,res) => {
         }
         const qr = new Qr(qrData);
         await qr.save();  
-        const option1 = await cryptoRandomString({length: 10, type: 'url-safe'});
-        const option2 = await cryptoRandomString({length: 10, type: 'url-safe'});
-        const qrText = `https://riceatm-admin.azurewebsites.net/process/qr/${option1}/${qr._id}/${option2}`;
-
+        const qrText = qr._id.toString();
+        
         await QRCode.toFile(image,qrText,{
           width: 220,
           height: 220,
@@ -112,9 +114,10 @@ exports.downloadPNGByID = async(req,res) => {
     try {
       const id = req.params.qrid;
       const phone = req.params.phone; 
-        const option1 = await cryptoRandomString({length: 10, type: 'url-safe'});
-        const option2 = await cryptoRandomString({length: 10, type: 'url-safe'});
-        const qrText = `https://riceatm-admin.azurewebsites.net/process/qr/${option1}/${id}/${option2}`;
+      const option1 = await cryptoRandomString({length: 10, type: 'url-safe'});
+      const option2 = await cryptoRandomString({length: 10, type: 'url-safe'});
+
+      const qrText = `https://riceatm-admin.azurewebsites.net/process/qr/${option1}/${id}/${option2}`;
 
         await QRCode.toFile(image,qrText,{
           width: 220,

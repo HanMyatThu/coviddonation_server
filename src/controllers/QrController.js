@@ -7,7 +7,7 @@ exports.scanningQR = async (req,res) => {
     try {
         if (req.session.views) {
             req.session.views++
-            if(req.session.views > 25) {
+            if(req.session.views > 255) {
                 return res.render('error',{ error : "Too Many Request"});
             }
         } else {
@@ -33,7 +33,7 @@ exports.scanningQR = async (req,res) => {
 
 exports.getQrById = async(req,res) => {
     try {
-        const qr = await Qr.findById(req.params._id);
+        const qr = await Qr.findById(req.params.id).populate({ path: 'code', select: ['isUsed'] });
         if(!qr) {
             return res.status(400).send(e);
         }
