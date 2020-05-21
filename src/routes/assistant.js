@@ -6,7 +6,7 @@ const basicAuth = require('../middleware/basicAuth');
 /**
  * Admin Routes
  */
-router.get('/api/admin/assistants', AssistantController.getAllAssistants);
+router.get('/api/admin/assistants',adminAuth, AssistantController.getAllAssistants);
 
 router.post('/api/admin/assistants',adminAuth, AssistantController.createAssistant);
 
