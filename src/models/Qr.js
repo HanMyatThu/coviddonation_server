@@ -16,7 +16,7 @@ const QrSchema = mongoose.Schema({
     activate: {
         type :Boolean,
         default : false
-    }
+    },
 },{
     timestamps:true
 })

@@ -3,7 +3,6 @@ const router = express.Router();
 const ProcessController = require('../controllers/ProcessController');
 const auth = require('../middleware/auth');
 const adminauth = require('../middleware/adminAuth');
-const basicAuth = require('../middleware/qrAuth');
 /**
  * For User - Private Routes
  */

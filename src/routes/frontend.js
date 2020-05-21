@@ -53,16 +53,25 @@ router.get('/admin/qrlist', (req,res) => {
     res.render('qrlist');
 })
 
+router.get('/admin/assistants', (req,res) => {
+    res.render('assistant');
+})
+
+router.get('/admin/qrscanner', (req,res) => {
+    res.render('qrscanner');
+})
+
+router.get('/admin/qractivate/:id', (req,res) => {
+    res.render('qractivate', { data : req.params.id});
+})
+//QR Front end Routes
+
 router.get('/process/qr/fail',(req,res) => {
     res.render('error',{ error : "Please try again later."})
 })
 router.get('/process/qr/success',(req,res) => {
     res.render('success');
 })
-
-// router.get('/admin/qractivate',(req,res) => {
-//     res.render('qractivate')
-// })
 
 //test route
 //remove later
