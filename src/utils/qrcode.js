@@ -114,10 +114,8 @@ exports.downloadPNGByID = async(req,res) => {
     try {
       const id = req.params.qrid;
       const phone = req.params.phone; 
-      const option1 = await cryptoRandomString({length: 10, type: 'url-safe'});
-      const option2 = await cryptoRandomString({length: 10, type: 'url-safe'});
 
-      const qrText = `https://riceatm-admin.azurewebsites.net/process/qr/${option1}/${id}/${option2}`;
+      const qrText = id;
 
         await QRCode.toFile(image,qrText,{
           width: 220,
