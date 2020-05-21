@@ -36,9 +36,11 @@ $(document).ready(() => {
                 "data": null,
                 "render": function(data,type,row) {
                     if(data['active'] === true) {
-                        return `<span class='badge badge-success'>Active</span>`
+                        return '<span class="btn btn-success dropdown-toggle" id="dropdownmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Active</span>'+
+                        '<div class="dropdown-menu" aria-labelledby="dropdownmune"><span class="disablebtn dropdown-item">Disable</span></div>';
                     } else {
-                        return `<span class='badge badge-danger'>Inactive</span>`
+                        return '<span class="btn btn-warning dropdown-toggle" id="dropdownmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Disable</span>'+
+                        '<div class="dropdown-menu" aria-labelledby="dropdownmune"><span class="activebtn dropdown-item">Active</span></div>';
                     }
                 }
             },
@@ -92,4 +94,41 @@ $(document).ready(() => {
                 $('#errorModalContent').html('Your process of adding assistant is failed. Please try again.');
             }); 
     })
+    
+    /**
+     * Disable Button
+     */
+    dataTable.on('click', 'tbody > tr > td > div > .disablebtn', function (e) {
+        e.preventDefault();
+
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
+        
+        const id = data._id;
+        const active = false;
+        //alert (id);
+        axios.put(`/api/admin/assistants/${id}`,{active}, {headers})
+        .then(response => {
+            dataTable.ajax.reload();
+        })
+    });
+
+    /**
+     * Active Button
+     */
+    dataTable.on('click', 'tbody > tr > td > div > .activebtn', function (e) {
+        e.preventDefault();
+
+        var tr = $(this).closest('tr');
+        var row = dataTable.row( tr );
+        let data = row.data();
+        
+        const id = data._id;
+        const active = true;
+        axios.put(`/api/admin/assistants/${id}`,{active}, {headers})
+        .then(response => {
+            dataTable.ajax.reload();
+        })
+    });
 })
