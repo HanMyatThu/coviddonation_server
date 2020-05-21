@@ -117,3 +117,19 @@ exports.updateQrByID = async (req,res) => {
         res.status(200).send({ error : true, message : "Error occurs at Server." })
     }
 }
+
+exports.updateAssistant = async (req,res) => {
+    try {
+        const assistant = await Assistant.findById(req.params.id);
+        assistant.name = assistant.name;
+        assistant.phone = assistant.phone;
+        assistant.createdBy = assistant.createdBy;
+        assistant.active = req.body.active;
+        
+        //console.log(assistant);
+        await assistant.save();
+        res.send({ message : "RiceATM assistant is Updated successfully"});
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
