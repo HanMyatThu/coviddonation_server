@@ -27,5 +27,7 @@ router.put('/api/admin/codes/:id',adminauth,CodeController.updateCode);
 
 router.delete('/api/admin/codes/:id', adminauth,CodeController.deleteCodeByID)
 
+router.put('/api/admin/codes/:id/isused', adminauth,CodeController.CodeIsUsed);
+
 
 module.exports = router;

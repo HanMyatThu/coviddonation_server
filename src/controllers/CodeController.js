@@ -131,3 +131,22 @@ exports.renewCodeForLogicApp = async (req,res) => {
         res.status(400).send({ error :e })
     }
 }
+
+exports.CodeIsUsed = async (req, res) => {
+    const updates = Object.keys(req.body);
+    const fillables = ["Already Used"];
+    const isValidate = updates.every((update) => fillables.includes(update));
+  
+    if (!isValidate) {
+      return res.status(400).send({ error: "Invalid updates" });
+    }
+  
+    try {
+      const code = await Code.findById(req.params.id);
+      code.isUsed = true;
+      await code.save();
+      res.send({ data: code });
+    } catch (e) {
+      res.status(400).send({ error: e });
+    }
+  };

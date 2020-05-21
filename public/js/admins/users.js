@@ -239,3 +239,5 @@ $(document).ready(() => {
         let todayDate = date+' '+time;
         return todayDate;
     }
+
+    

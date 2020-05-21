@@ -11,6 +11,8 @@ $(document).ready(() => {
         responsive: true,
         bInfo: false,
         autowidth: true,
+        dom: "Bfrtip",
+        buttons: ["copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5", "pageLength"],
         "ajax": {
             "url": '/api/admin/codes',
             "dataType": 'json',
@@ -32,7 +34,9 @@ $(document).ready(() => {
                         part = `<span class="badge badge-warning mr-2">Already Used</span>`
                         break;
                     case false:
-                         part = `<span class="badge badge-warning mr-2">Not Used</span>`
+                        part = `<div class="dropdown"><span class="btn btn-sm btn-info dropdown-toggle ml-3" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Not Used</span><div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <span class="dropdown-item">Already Used</span></div></div>`
                         break;
                     default:
                         break;
@@ -64,4 +68,24 @@ $(document).ready(() => {
         ],
         select: true,
     } );
+
+    // user is used
+      dataTable.on("click", "tbody > tr > td > div > div > span", function (e) {
+        e.preventDefault();
+        var tr = $(this).closest("tr");
+        var row = dataTable.row(tr);
+        let data = row.data();
+    
+        const dumpData = {
+          isUsed: true,
+        };
+        axios.put(`/api/admin/codes/${data._id}/isused`,dumpData,{headers})
+            .then((response)=>{
+                dataTable.ajax.reload();
+
+            })
+            .catch(e=>{
+                console.log(e);
+            });
+        });
 })
