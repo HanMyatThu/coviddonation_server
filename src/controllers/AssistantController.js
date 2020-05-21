@@ -133,3 +133,13 @@ exports.updateAssistant = async (req,res) => {
         res.status(500).send(e);
     }
 }
+
+exports.deleteAssistant = async (req,res) => {
+    try {
+        const assistant = await Assistant.findById(req.params.id);
+        await assistant.remove();
+        res.send({ data: "Assistant succesfully removed"});
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
