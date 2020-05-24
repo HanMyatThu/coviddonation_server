@@ -1,13 +1,35 @@
 const User = require('../models/User');
 const cryptoRandomString = require('crypto-random-string');
+const smsController = require('../controllers/SmsController');
  
 //register
 exports.CreateUser = async ( req,res ) => {
     try {
+        const existedUser = await User.findOne({ phone : req.body.phone});
+        if(existedUser) {
+            return res.status(400).send({ error: "User is already existed"});
+        }
+        const otp = getRandomInt();
+      
+        if(!req.body.phone.startsWith('09')) {
+            return res.status(401).send({ error : "Invalid Phone Number"})
+        }
+        const content = `တစ်ခါသုံး code မှာ ${otp}  ဖြစ်ပါသည်။ ၅မိနစ်အတွင်းသုံးပေးပါ။`;
+        await smsController.sendSMS(req.body.phone,content);
+        res.send({otp});
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}
+
+exports.userOtp = async (req,res) => {
+    try {
         const user = new User(req.body);
+        user.approved = true;
+        user.qruser = true;
         await user.save();
         res.send(user);
-    } catch (e) {
+    } catch(e) {
         res.status(500).send(e);
     }
 }
@@ -136,6 +158,22 @@ exports.changeUserPassword = async (req,res) => {
     }
 }   
 
+exports.checkIfUserisExisted = async(req,res) => {
+    try {
+        const phone = req.body.phone;
+        const existedUser = await User.findOne({ phone });
+        if(!existedUser) {
+            return res.status(404).send({ error : "User not found"});
+        }
+        const otp = getRandomInt();
+        const content = `တစ်ခါသုံး code မှာ ${otp}  ဖြစ်ပါသည်။ ၅မိနစ်အတွင်းသုံးပေးပါ။`;
+        await smsController.sendSMS(req.body.phone,content);   
+        res.send({otp});
+    } catch(e) {
+        res.status(500).send(e);
+    }
+}
+
 /*
 * Get random 6 numbers for OTP
 */
@@ -146,3 +184,4 @@ function getRandomInt() {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+

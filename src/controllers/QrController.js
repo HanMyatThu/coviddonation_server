@@ -5,14 +5,7 @@ const cryptoRandomString = require('crypto-random-string');
 
 exports.scanningQR = async (req,res) => {
     try {
-        if (req.session.views) {
-            req.session.views++
-            if(req.session.views > 255) {
-                return res.render('error',{ error : "Too Many Request"});
-            }
-        } else {
-            req.session.views = 1
-        }
+       
         const qrid =  req.params.qrid;
         const qr = await Qr.findById(qrid);
 

@@ -135,3 +135,81 @@ exports.downloadPNGByID = async(req,res) => {
         res.status(500).send(e);
     }
 }
+
+exports.downloadPNGfromClient = async (req,res) => {
+  const image = path.join(__dirname,'client.png');
+  try { 
+        const id = req.params.id;
+        const existedUser = await User.findById(id);
+        if(!existedUser) {
+          return res.status(404).send({ error : "User is not existed"});
+        }
+        
+        const codeData = {
+          owner: existedUser._id
+        }
+        const code = new Code(codeData);
+        const firstpart = cryptoRandomString({length: 3, type: 'distinguishable'});
+        const secondpart = cryptoRandomString({length: 3, type: 'distinguishable'});
+        code.text = `${firstpart}-${secondpart}`;
+        await code.save();
+
+      // create QR here
+      const qrData = {
+        user: id,
+        code: code._id,
+        machine: '5ebfc07eeb2f46182865a043',
+        activate: true
+      }
+      const qrdata = new Qr(qrData);
+      await qrdata.save();  
+      const qrText = qrdata._id.toString();
+
+      await QRCode.toFile(image,qrText,{
+        width: 220,
+        height: 220,
+        color: {
+          dark: '#000',  // Blue dots
+          light: '#fff' // Transparent background
+        }
+      });
+
+      //send SMS to user
+      const content = 'ဆန်ထုတ်ယူရန် တနင်္လာနေ့ မှ သောကြာနေ့ အတွင်း (၁၀:၀၀ မှ ၁၂:၀၀) (၂:၀၀ မှ ၄:၀၀) ကြား လာရောက်ထုတ်ယူနိုင်ပါပြီ။';
+      await SMSController.sendSMS(existedUser.phone,content);
+
+      const file  = await fs.createReadStream(image);
+      res.writeHead(200, {'Content-disposition': `attachment; filename=${existedUser.phone}.png`});
+      file.pipe(res); 
+  } catch(e) {
+    res.status(500).send(e);
+  }
+}
+
+exports.downloadQrForRegisteredUser = async(req,res) => {
+   const image = path.join(__dirname,'client-registered.png');
+   try {
+
+      const existedUser = await User.findOne({phone: req.params.id});
+      if(!existedUser) {
+        return res.status(404).send({ error : "User not found"});
+      }
+
+     const qr = await Qr.findOne({ user: existedUser._id});
+     const qrText = qr._id.toString();
+        
+      await QRCode.toFile(image,qrText,{
+        width: 220,
+        height: 220,
+        color: {
+          dark: '#000',  // Blue dots
+          light: '#fff' // Transparent background
+        }
+      });
+      const file  = await fs.createReadStream(image);
+      res.writeHead(200, {'Content-disposition': `attachment; filename=qr-default.png`});
+      file.pipe(res); 
+   } catch(e) {
+      res.status(500).send(e);
+   }
+}

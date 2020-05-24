@@ -6,6 +6,7 @@ const Code = require('../models/Code');
 const Qr = require('../models/Qr');
 const Process = require('../models/Process');
 const Request = require('../models/Request')
+const BlackList = require('../models/Blacklist');
 
 const UserSchema = mongoose.Schema({
     name: {
@@ -139,6 +140,7 @@ UserSchema.pre('remove',async function(next){
     await Process.deleteMany({ user: user._id });
     await Request.deleteMany({ user: user._id });
     await Qr.deleteOne({ user: user._id});
+    await BlackList.deleteOne({ user: user._id});
     next()
 })
 

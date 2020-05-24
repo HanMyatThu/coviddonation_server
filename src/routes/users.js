@@ -3,13 +3,18 @@ const router = express.Router();
 const UserController = require('../controllers/UserController');
 const userauth = require('../middleware/auth');
 const adminauth = require('../middleware/adminAuth');
+const publicauth = require('../middleware/publicAuth');
 
 /**
  * Public Routes
  */
-router.post('/users/login', UserController.UserLogin);
+// router.post('/users/login', UserController.UserLogin);
 
-router.post('/users/register', UserController.CreateUser);
+router.post('/users/register', publicauth,UserController.CreateUser);
+
+router.post('/users/register/confirmed',publicauth, UserController.userOtp);
+
+router.post('/users/login/checked',publicauth, UserController.checkIfUserisExisted);
 
 /**
  * Private Routes
@@ -31,7 +36,7 @@ router.get('/api/admin/users/:id',adminauth, UserController.getUserById);
 
 router.put('/api/admin/users/:id/approved', adminauth,UserController.ApprovedUser);
 
-router.delete('/api/admin/users/:id', UserController.deletUser);
+router.delete('/api/admin/users/:id',adminauth, UserController.deletUser);
 
 router.put('/api/admin/users/password/reset/:id',adminauth,UserController.changeUserPassword);
 

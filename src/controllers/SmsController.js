@@ -86,9 +86,8 @@ exports.sendSMS = async (phone,content) => {
                 {   "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`}
             })
-    
         const responseSMS = await sendSMS.json();
-        console.log(responseSMS);
+        console.log('sms is sent');
     } catch(e) {
         console.log(e)
         

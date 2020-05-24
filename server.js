@@ -50,7 +50,7 @@ const SMSRoute = require('./src/routes/sms');
 const RequestRoute = require('./src/routes/request');
 const qrRoute = require('./src/routes/qrcode');
 const assistantRoute = require('./src/routes/assistant');
-const test = require('./src/utils/encrypt');
+
 
 app.use(userRoutes);
 app.use(AdminRoute);

@@ -59,7 +59,15 @@ $(document).ready(() => {
     var dataTable =  $('#processTable').DataTable( {
         responsive: true,
         bInfo: false,
+        dom: 'Bfrtip',
         autowidth: true,
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'pageLength'
+        ],
         "ajax": {
             "url": '/api/admin/processes',
             "dataType": 'json',
