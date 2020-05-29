@@ -10,6 +10,10 @@ router.get('/api/admin/assistants',adminAuth, AssistantController.getAllAssistan
 
 router.post('/api/admin/assistants',adminAuth, AssistantController.createAssistant);
 
+router.delete('/api/admin/assistants/:id',adminAuth, AssistantController.deleteAssistant);
+
+router.put('/api/admin/assistants/:id',adminAuth, AssistantController.updateAssistant);
+
 /**
  * Public Routes
  */
