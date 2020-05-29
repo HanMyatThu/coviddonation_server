@@ -20,6 +20,7 @@ block content
                             th Approved By
                             th Active
                             th createdAt
+                            th Delete
                         tbody 
 
      //New Machine Modal
@@ -47,6 +48,21 @@ block content
                                 input#password.form-control(type='password' ,name="password",required='',placeholder='password')
                         .form-group.text-right
                             button.btn.btn-primary(type='submit') Save
+    //Assistant Delete Modal
+    #assistantDeleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='assistantDeleteModalTitle', aria-hidden='true')
+        .modal-dialog.modal-dialog-centered(role='document')
+                    .modal-content
+                        .modal-header.bg-danger.text-center
+                            h5#codeDeleteModalTitle.modal-title(style="color:white") Are you sure you want to Delete Assistant?
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            form#assistantDelForm
+                                .form-group.mt-3
+                                    label.form-label(for='confirmDel') Enter confirm to delete assistant.
+                                    input#confirmDel.form-control(type="text",name="confirmDel",required='',placeholder='confirm')
+                                .form-group.text-right
+                                    button.btn.btn-primary(type='submit') Save
     
     include ./utils/footer
     include ./utils/success
