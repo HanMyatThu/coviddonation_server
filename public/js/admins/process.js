@@ -88,16 +88,48 @@ $(document).ready(() => {
                   }
               }
             },
-            { "data": "user.name" },
-            { "data": "machine.name" },
-            { "data": "code.text" },
+            { "data" : null,
+              "render": function(data,type,row) {
+                if(data['user'] === null){
+                    return '-';
+                }else{
+                    return `${data.user['name']}`;
+                }
+              } 
+            },
+            { "data" : null,
+              "render": function(data,type,row) {
+                if(data['machine'] === null){
+                    return '-';
+                }else{
+                    return `${data.machine['name']}`;
+                }
+              } 
+            },
+            { "data" : null,
+              "render": function(data,type,row) {
+                if(data['code'] === null){
+                    return '-';
+                }else{
+                    return `${data.code['text']}`;
+                }
+              } 
+            },
             {
                 "data": null,
                 "render": function(data,type,row) {
                     let date = new Date(data['createdAt']);
                     let day = date.getFullYear()+'.'+(date.getMonth()+1)+'.'+date.getDate();
-                    let time = date.getHours()+':'+(date.getMinutes()+1)+':'+date.getSeconds();
-                    let fulldate = day+' '+time;
+                    let hours = date.getHours();
+                    let minutes = (date.getMinutes()+1);
+                    let seconds = date.getSeconds();
+                    let ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; 
+                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                    seconds = seconds < 10 ? '0'+seconds : seconds;
+                    let time = hours+':'+minutes+':'+seconds+' '+ampm;
+                    let fulldate = day+'<br>'+time;
                     return fulldate;
                 }
             },
@@ -107,8 +139,16 @@ $(document).ready(() => {
                     let transactionDate = new Date(data['createdAt']);
                     let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 7);
                     let date = nextWeek.getFullYear()+'-'+(nextWeek.getMonth()+1)+'-'+nextWeek.getDate();
-                    let time = transactionDate.getHours()+':'+(transactionDate.getMinutes()+1)+':'+transactionDate.getSeconds();
-                    let todayDate = date+' '+time;
+                    let hours = transactionDate.getHours();
+                    let minutes = (transactionDate.getMinutes()+1);
+                    let seconds = transactionDate.getSeconds();
+                    let ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; 
+                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                    seconds = seconds < 10 ? '0'+seconds : seconds;
+                    let time = hours+':'+minutes+':'+seconds+' '+ampm;
+                    let todayDate = date+'<br>'+time;
                     return todayDate;
                 }
             },
