@@ -41,7 +41,7 @@ $(document).ready(() => {
                 let part = '';
                 switch (data.code['isUsed']) {
                     case true:
-                        part = `<span class="badge badge-warning mr-2">Already Used</span>`
+                        part = `<span class="badge badge-success mr-2">Already Used</span>`
                         break;
                     case false:
                          part = `<span class="badge badge-warning mr-2">Not Used</span>`
