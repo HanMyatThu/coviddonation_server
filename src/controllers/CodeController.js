@@ -34,25 +34,16 @@ exports.deleteCode = async (req,res) => {
 }
 
 exports.updateCode = async (req,res) => {
-    const updates = Object.keys(req.body);
-    const fillables = ['isUsed','process'];
-    const isValidate = updates.every((update)=>fillables.includes(update))
-
-    if(!isValidate){
-        return res.status(400).send({error: 'Invalid updates'})
-    }
-
     try{
         const code = await Code.findById(req.params.id);
-        (req.body.isUsed !== null) ? code.isUsed = req.body.isUsed : code.isUsed = code.isUsed;
-        (req.body.process) ? code.process = req.body.process : code.process = code.process;
+        code.isUsed = req.body.isUsed;
+        
         await code.save();
-        res.send(code);
+        res.send({ message : "RiceATM code is Updated successfully"});
     }catch(e){
         res.status(400).send({ error :e })
     }
 }
-
 
 exports.getCodeByLogin = async(req,res) => {
     try {
