@@ -5,20 +5,19 @@ const cryptoRandomString = require('crypto-random-string');
 
 exports.scanningQR = async (req,res) => {
     try {
-       
         const qrid =  req.params.qrid;
         const qr = await Qr.findById(qrid);
 
         //check if qr is activated or nor 
         if(qr.activate === false) {
-            return res.render('qractivate', { data : qr._id});
+            return res.render('qractivate', { data : qr._id });
         }
         const user = await User.findById(qr.user);
         if(user.qruser === false) {
             return res.render('error',{ error : "You don't have permission to access this page"});
         }
 
-        res.render('qr',{data: qr._id});
+        res.render('qr',{data: qr._id, machineId : req.query.machineId});
     } catch(e) {
         res.render('error',{ error : "Permission Error"});
     }
@@ -38,7 +37,7 @@ exports.getQrById = async(req,res) => {
 
 exports.updateQrById = async(req,res) => {
     const updates = Object.keys(req.body);
-    const fillables = ['name','phone','street','township'];
+    const fillables = ['name','phone','street','township','city'];
     const isValidate = updates.every((update)=>fillables.includes(update))
 
     if(!isValidate){
@@ -46,13 +45,14 @@ exports.updateQrById = async(req,res) => {
     }
 
     try{
-        const { name, phone,street,township} = req.body;
+        const { name, phone,street,township,city} = req.body;
         const newuser = {
             name ,
             phone,
             township,
             password : '123456',
             street,
+            city,
             approved: true,
             qruser: true
         }  
@@ -94,7 +94,7 @@ exports.getQrList = async(req,res) => {
                         .populate({ path: 'user', select: ['name', 'phone'] })
                         .populate({ path: 'machine',select: ['name','status']})
                         .populate({ path: 'code',select: ['text', 'isUsed']});
-
+        
         res.send({ data: processes});
     } catch(e) {
         res.status(500).send(e);

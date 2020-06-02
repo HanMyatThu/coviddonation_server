@@ -25,7 +25,6 @@ $(document).ready(() => {
             { "data": "user.name" },
             { "data": "user.phone" },
             { "data": "machine.name" },
-
             { "data" : null,
               "render" : function(data,type,row) {
                   if(data.machine['status'] === 'Working') {

@@ -1,7 +1,7 @@
 const auth = (req,res,next) => {
     try {
        
-        const whiteList = ['https://riceatm.azurewebsites.net','https://riceatm.azurewebsites.net/','http://riceatm.org'];
+        const whiteList = ['https://riceatm.azurewebsites.net','https://www.riceatm.org'];
         const requestedUrl = req.headers.origin;
 
         const isWhitelist = whiteList.filter((list) => list === requestedUrl);

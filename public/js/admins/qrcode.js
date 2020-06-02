@@ -4,15 +4,36 @@ $(document).ready(() => {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+token
     }
+
+    $('#city').change(e => {
+      const type = e.target.value;
+
+      if(type === 'naypyitaw') {
+        $('#township').attr('disabled',false);
+        $('#township').val('');
+      } else {
+        $('#township').attr('disabled', true);
+        $('#township').val('Hlaing Thar Yar');
+      }
+    })
     $('#QrForm').submit(e => {
         e.preventDefault();
         var phone = $('#phone').val();
         var township = $('#township').val();
         var street = $('#street').val();
         var name = $('#name').val();
+        var city = $('#city').val();
         
-        axios({
-            url: `/api/download/qrcode/qr/${name}/${phone}/${township}/${street}`,
+        if(city === '0') {
+          $('#errorModal').modal('show');
+          $('#errorModalTitle').html('Invalid City');
+          $('#errorModalContent').html('Process failed. Please enter city');
+          setTimeout(() => {
+            $('#errorModal').modal('hide');
+          },1500);
+        } else {
+          axios({
+            url: `/api/download/qrcode/qr/${name}/${phone}/${township}/${street}/${city}`,
             method: 'GET',
             responseType: 'blob', // important
             headers
@@ -48,6 +69,7 @@ $(document).ready(() => {
               },1500);
             }
           });
+        }
     })
     
     $('#defaultQr').click(e => {
@@ -56,7 +78,7 @@ $(document).ready(() => {
       axios({
         url: `/api/download/qrcode/defaultqr`,
         method: 'GET',
-        responseType: 'blob', // important
+        responseType: 'blob',
         headers
       }).then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));

@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const cryptoRandomString = require('crypto-random-string');
 const smsController = require('../controllers/SmsController');
- 
+
 //register
 exports.CreateUser = async ( req,res ) => {
     try {

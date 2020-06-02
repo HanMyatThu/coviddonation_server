@@ -16,7 +16,6 @@ exports.createProcess = async (req,res) => {
         if(lastestProcess[0].status === 'processing') {
             return res.status(400).send({ error : "Please wait for a moment" });
         }
-
         const previousProcess = await Process.find({ user: req.user._id}).sort({_id:-1}).limit(1);
         if(previousProcess.length !== 0) {
             if(previousProcess[0].status === 'processing' || previousProcess[0].status === 'unavailable') {
@@ -83,8 +82,8 @@ exports.getProcessByUser = async(req,res) => {
 exports.getAllProcess = async (req,res) => {
     try {
         const processes = await Process.find()
-                                .populate({ path: 'user', select: 'name' })
-                                .populate({ path: 'machine',select: ['name','code']})
+                                .populate({ path: 'user', select: ['name','phone']})
+                                .populate({ path: 'machine',select: ['name','location']})
                                 .populate({ path: 'code',select: ['text']});
         res.send({ data: processes });
     } catch(e) {
@@ -212,15 +211,33 @@ exports.createProcessFromAdmin = async(req,res) => {
 exports.createProcessFromQr = async(req,res) => {
     try {
         const qrid =  req.body.qrid;
+        const machineid = req.body.machineId;
         const qr = await Qr.findById(qrid);
-        const machine = await Machine.findById(qr.machine);
+
+        const machine = await Machine.findById(machineid);
         if(!machine || machine.status === 'unavailable' || machine.status === 'failed') {
             return res.status(404).send({ error : "You code is not for that machine"});
         }
         const lastestProcess = await Process.find({ machine: machine._id}).sort({ _id: -1}).limit(1);
-        if(lastestProcess[0].status === 'processing') {
-            return res.status(400).send({ error : "Please wait for a moment" });
+        if(lastestProcess.length !== 0) {
+            if(lastestProcess[0].status === 'processing') {
+                const tranDate =  new Date(lastestProcess[0].createdAt);
+                const now = new Date();
+                const difference = now.getTime() - tranDate.getTime();
+                const isOneMinutePass  = difference / 60000;
+                if(isOneMinutePass > 1) {
+                    lastestProcess[0].status = 'failed';
+                    await lastestProcess[0].save();
+
+                    const usedCode = await Code.findById(lastestProcess[0].code);
+                    usedCode.isUsed = false;
+                    await usedCode.save();
+                } else {
+                    return res.status(403).send({ error : "Please wait for a moment" });
+                }
+            }
         }
+
         const previousProcess = await Process.find({ user: qr.user}).sort({_id:-1}).limit(1);
         if(previousProcess.length !== 0) {
             if(previousProcess[0].status === 'processing' || previousProcess[0].status === 'unavailable') {
@@ -236,11 +253,11 @@ exports.createProcessFromQr = async(req,res) => {
         
             if(previousProcess[0].status !== 'failed') {
                 if(today < next3days ) {
-                    return res.status(401).send({ error : "You have no permission to create the process"});
+                    return res.status(200).send({ error: true, message : `You have used your Qr on ${date} `});
                 }
             }
         }
-
+       
         //code update
         const code = await Code.findById(qr.code);
         if(!code) {
@@ -267,11 +284,16 @@ exports.createProcessFromQr = async(req,res) => {
         }
         await IotController.sendC2D(c2Dsg,machine.iotString);
         await newprocess.save();
+        
+        //update the Qr
+        qr.machine = machine._id;
+        await qr.save(); 
+
         // destory the session
         if(req.session.views) {
             await req.session.destroy();
         }
-        res.send({ data: 'Success'});
+        res.send({ error: false , message : 'Transaction Success'});
     } catch(e) {
         res.status(500).send(e);
     }

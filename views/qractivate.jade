@@ -25,6 +25,12 @@ block content
                                     label(for='township') Enter Township
                                     input.form-control#township(type="text" , name='township', value='Hlaing Thar Yar',required,disabled)
                                 .form-group
+                                    label(for='city') Enter City
+                                    select.form-control#city(type="text" , name='city', value='Hlaing Thar Yar',required)
+                                        option(value='0') <--- Choose City --->
+                                        option(value='yangon') Yangon
+                                        option(value='naypyitaw') Nay Pyi Taw
+                                .form-group
                                     button.btn.btn-primary(type="submit") Submit
     script(src="/js/admins/qractivate.js")
     

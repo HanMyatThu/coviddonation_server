@@ -2,17 +2,28 @@ extends layout
 
 block content
     section#section.bg_fade
-        .container
+        .container.text-center
             .row.mt-2.mb-2
                 .col-md-12.text-center
-                    h4 QR Scanner
-
+                    h4 QR-Scanner
+            row.mt-5
+                .col-md-4.offset-md-4.col-sm-12
+                    .form-group 
+                        label(for='cameraSelection') Select Camera:
+                        select.form-control(name='cameraSelection', id='cameraSelection')
+                    .form-group 
+                        label(for='machineSelection') Select Machine:
+                        select.form-control(name='machineSelection', id='machineSelection')
+                            option(value=0) <--- Choose a machine --->
+                    button.btn.btn-dark.mt-2(id='scanButton') Start Scanning
+                    span 
+                    button.btn.btn-dark.mt-2(id='stopButton') Stop Scanning
             .row(style="margin-top:50px;")
                 .col-md-12.col-sm-12
                    video#preview
+                .col-md-12.mt-4
+                    p#qr-status
     include ./utils/footer
-    script(type='text/javascript', src='https://rawgit.com/schmich/instascan-builds/master/instascan.min.js')
+    script(type='text/javascript', src='/plugins/js/instascan.min.js')
     script(type='text/javascript', src='/js/admins/qrscanner.js')
       
-
-    

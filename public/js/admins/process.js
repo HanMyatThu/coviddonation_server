@@ -56,6 +56,7 @@ $(document).ready(() => {
         }
     })
         
+    
     var dataTable =  $('#processTable').DataTable( {
         responsive: true,
         bInfo: false,
@@ -89,7 +90,9 @@ $(document).ready(() => {
               }
             },
             { "data": "user.name" },
+            { "data": "user.phone"},
             { "data": "machine.name" },
+            { "data": "machine.location" },
             { "data": "code.text" },
             {
                 "data": null,
@@ -105,7 +108,7 @@ $(document).ready(() => {
                 "data": null,
                 "render": function(data,type,row) {
                     let transactionDate = new Date(data['createdAt']);
-                    let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 7);
+                    let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 3);
                     let date = nextWeek.getFullYear()+'-'+(nextWeek.getMonth()+1)+'-'+nextWeek.getDate();
                     let time = transactionDate.getHours()+':'+(transactionDate.getMinutes()+1)+':'+transactionDate.getSeconds();
                     let todayDate = date+' '+time;

@@ -5,7 +5,7 @@ const adminauth = require('../middleware/adminAuth');
 const QrController = require('../controllers/QrController');
 const publicAuth = require('../middleware/publicAuth');
 
-router.get('/api/download/qrcode/qr/:name/:phone/:township/:street',adminauth,QrCode.downloadPNG);
+router.get('/api/download/qrcode/qr/:name/:phone/:township/:street/:city',adminauth,QrCode.downloadPNG);
 
 router.get('/api/download/qrcode/defaultqr',adminauth,QrCode.downloadPNGDefault);
 

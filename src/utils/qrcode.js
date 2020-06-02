@@ -4,17 +4,15 @@ const path = require('path');
 const User = require('../models/User');
 const Code = require('../models/Code');
 const Qr = require('../models/Qr');
-const crypto = require('crypto');
 const cryptoRandomString = require('crypto-random-string');
 const SMSController = require('../controllers/SmsController');
-const secretMsg = process.env.SECRET_MSG;
-const cipherString = process.env.CIPHER_STRING;
-const encrypt = require('./encrypt');
+const BlobStorageController = require('../controllers/BlobStorageController');
+const AZURE_LINK = process.env.AZURE_URL;
 
 exports.downloadPNG = async(req,res) => {
   const image = path.join(__dirname,'qr.png');
     try {
-        const { name,phone, township,street} = req.params;
+        const { name,phone, township,street,city} = req.params;
 
           const newuser = {
             name ,
@@ -22,6 +20,7 @@ exports.downloadPNG = async(req,res) => {
             township,
             password : '123456',
             street,
+            city,
             approved: true,
             qruser: true
           }  
@@ -137,7 +136,6 @@ exports.downloadPNGByID = async(req,res) => {
 }
 
 exports.downloadPNGfromClient = async (req,res) => {
-  const image = path.join(__dirname,'client.png');
   try { 
         const id = req.params.id;
         const existedUser = await User.findById(id);
@@ -164,6 +162,7 @@ exports.downloadPNGfromClient = async (req,res) => {
       const qrdata = new Qr(qrData);
       await qrdata.save();  
       const qrText = qrdata._id.toString();
+      const image = path.join(__dirname,`${existedUser.phone}.png`);
 
       await QRCode.toFile(image,qrText,{
         width: 220,
@@ -178,26 +177,26 @@ exports.downloadPNGfromClient = async (req,res) => {
       const content = 'ဆန်ထုတ်ယူရန် တနင်္လာနေ့ မှ သောကြာနေ့ အတွင်း (၁၀:၀၀ မှ ၁၂:၀၀) (၂:၀၀ မှ ၄:၀၀) ကြား လာရောက်ထုတ်ယူနိုင်ပါပြီ။';
       await SMSController.sendSMS(existedUser.phone,content);
 
-      const file  = await fs.createReadStream(image);
-      res.writeHead(200, {'Content-disposition': `attachment; filename=${existedUser.phone}.png`});
-      file.pipe(res); 
+      await BlobStorageController.uploadImageToAzure(image);
+      await fs.unlinkSync(image);
+      res.send({ link : AZURE_LINK+'/'+existedUser.phone+'.png' }); 
   } catch(e) {
     res.status(500).send(e);
   }
 }
 
 exports.downloadQrForRegisteredUser = async(req,res) => {
-   const image = path.join(__dirname,'client-registered.png');
    try {
-
-      const existedUser = await User.findOne({phone: req.params.id});
+      const phone = req.params.id;
+      const existedUser = await User.findOne({ phone });
       if(!existedUser) {
         return res.status(404).send({ error : "User not found"});
       }
 
      const qr = await Qr.findOne({ user: existedUser._id});
      const qrText = qr._id.toString();
-        
+     const image = path.join(__dirname,`${phone}.png`);
+     
       await QRCode.toFile(image,qrText,{
         width: 220,
         height: 220,
@@ -206,9 +205,10 @@ exports.downloadQrForRegisteredUser = async(req,res) => {
           light: '#fff' // Transparent background
         }
       });
-      const file  = await fs.createReadStream(image);
-      res.writeHead(200, {'Content-disposition': `attachment; filename=qr-default.png`});
-      file.pipe(res); 
+
+      await BlobStorageController.uploadImageToAzure(image);
+      await fs.unlinkSync(image);
+      res.send({ link : AZURE_LINK+'/'+phone+'.png' }); 
    } catch(e) {
       res.status(500).send(e);
    }

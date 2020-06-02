@@ -51,7 +51,6 @@ const RequestRoute = require('./src/routes/request');
 const qrRoute = require('./src/routes/qrcode');
 const assistantRoute = require('./src/routes/assistant');
 
-
 app.use(userRoutes);
 app.use(AdminRoute);
 app.use(FrontRoute);

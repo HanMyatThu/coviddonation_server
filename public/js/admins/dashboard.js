@@ -2,7 +2,6 @@ $(document).ready(() => {
     var code = '';
     var user = '';
     const token = Cookies.get('admintoken');
-
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '+token

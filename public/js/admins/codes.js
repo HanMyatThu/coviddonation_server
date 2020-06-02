@@ -54,7 +54,7 @@ $(document).ready(() => {
                 "data": null,
                 "render": function(data,type,row) {
                     let transactionDate = new Date(data['updatedAt']);
-                    let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 7);
+                    let nextWeek = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), transactionDate.getDate() + 3);
                     let date = nextWeek.getFullYear()+'-'+(nextWeek.getMonth()+1)+'-'+nextWeek.getDate();
                     let time = transactionDate.getHours()+':'+(transactionDate.getMinutes()+1)+':'+transactionDate.getSeconds();
                     let todayDate = date+' '+time;
